@@ -1,0 +1,20 @@
+{
+  "name": "bank-webhook",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+
+    "@types/express": "^4.17.21",
+    "typescript": "^5.5.4"
+  },
+  "dependencies": {
+    "@repo/db": "*",
+    "esbuild": "^0.23.0",
+    "express": "^4.19.2"
+  },
+  "scripts": {
+    "build":"npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js",
+    "dev":"npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js && node dist/index.js"
+  }
+}
