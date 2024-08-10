@@ -63,8 +63,10 @@ export const SignupComponent = () => {
                 <Input value={data.email} onChange={(e) => setData({ ...data, email: e.target.value })} label="Email" placeholder="Enter your email" />
                 <Input value={data.password} onChange={(e) => setData({ ...data, password: e.target.value })} label="Password" type="password" placeholder="Enter your password" />
                 <PrimaryButton label="Create an account" onClick={handleSignup}></PrimaryButton>
-                <HorizontalLine label="or"/>
-                <SecondaryButton label="Sign up with Google" onClick={handleSignup}></SecondaryButton>
+                <HorizontalLine label="or" />
+                <SecondaryButton label="Sign up with Google" onClick={async () => {
+                     await signIn('google', { callbackUrl: 'http://localhost:3000' })
+                }}></SecondaryButton>
 
             </div >
 

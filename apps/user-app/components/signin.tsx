@@ -59,7 +59,9 @@ export const SigninComponent = () => {
                 </div>
                 <PrimaryButton label="Sign in" onClick={handleSignin}></PrimaryButton>
                 <HorizontalLine label="or" />
-                <SecondaryButton label="Sign in with Google" onClick={handleSignin}></SecondaryButton>
+                <SecondaryButton label="Sign in with Google" onClick={async()=>{
+                 await signIn('google', { callbackUrl: 'http://localhost:3000' })
+                }}></SecondaryButton>
 
                
             </div>

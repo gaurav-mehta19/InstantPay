@@ -25,3 +25,11 @@ export const SecondaryButton = ({ label, onClick }: ButtonProps) => {
     </button>
   )
 }
+
+export const TertiaryButton = ({ label,className,onClick }: ButtonProps) => {
+  return (
+    <button className={className} onClick={onClick}>
+      {label}
+    </button>
+  )
+}

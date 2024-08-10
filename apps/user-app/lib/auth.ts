@@ -15,9 +15,9 @@ export const NEXT_AUTH = {
                 email: { label: "email", type: "text" },
                 password: { label: "Password", type: "password" },
             },
-            async authorize(credentials:any) {
+            async authorize(credentials: any) {
 
-                if (!credentials.email || !credentials.password ) {
+                if (!credentials.email || !credentials.password) {
                     throw new Error('Invalid input');
                 }
                 const { email, password } = credentials;
@@ -38,7 +38,7 @@ export const NEXT_AUTH = {
                     throw new Error('User not found');
                 }
 
-                if(!userExist.password){
+                if (!userExist.password) {
                     throw new Error('Invalid password');
                 }
 
@@ -59,18 +59,42 @@ export const NEXT_AUTH = {
         GoogleProvider({
             name: 'google',
             clientId: process.env.GOOGLE_CLIENT_ID || "",
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET || ""
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+
+            async profile(profile: any) {
+                console.log(profile);
+                
+                const user = await prisma.user.findUnique({
+                    where: {
+                        email: profile.email
+                    }
+                })
+
+                if (!user) {
+                    await prisma.user.create({
+                        data: {
+                            email: profile.email,
+                            name: profile.name,
+                        }
+                    })
+                }
+
+                return {
+                    id: profile.sub,
+                    email: profile.email,
+                    name: profile.name
+                }
+            }
         })
     ],
     secret: process.env.SECRET,
-    callbacks:{
-      async session({ token, session }: any) {
+    callbacks: {
+        async session({ token, session }: any) {
             session.user.id = token.sub
-
             return session
         }
     },
     pages: {
         signIn: '/users/signin',
-      },
+    },
 }
