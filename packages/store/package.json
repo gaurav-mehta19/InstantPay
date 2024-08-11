@@ -11,6 +11,8 @@
   },
   "exports":{
     "./useBalance":"./src/hooks/useBalance.ts",
-    "./balance":"./src/atoms/balance.ts"
+    "./balance":"./src/atoms/balance.ts",
+    "./sideBar":"./src/atoms/sideBar.ts",
+    "./useSideBar":"./src/hooks/useSideBar.ts"
   }
 }

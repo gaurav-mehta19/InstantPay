@@ -3,15 +3,11 @@
 import { Testing } from "@repo/ui/testing";
 import Balance from "../components/balance";
 import { signOut, useSession } from "next-auth/react";
-import { AppbarClient } from "../components/appbarClient";
 
 export default function Home() {
   const session = useSession();
   return (
     <div className="bg-[#0f0f10] h-screen">
-      <div>
-      <AppbarClient/>
-      </div>
           <div className="text-3xl bg-slate-300">Hi there</div>
           <div>
             <Testing />
