@@ -3,7 +3,8 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from 'sonner'
 import Providers from "./providers";
-import { AppbarClient } from "../components/appbarClient";
+import { AppBarClient } from "../components/appBarClient";
+
 
 
 
@@ -31,7 +32,7 @@ export default function RootLayout({
       <Providers>
         <body className={`${geistSans.variable} ${geistMono.variable}`}>
           <div>
-            <AppbarClient/>
+            <AppBarClient/>
           </div>
           {children}
           <Toaster

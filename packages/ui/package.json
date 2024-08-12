@@ -3,12 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "exports": {
-    "./button": "./src/button.tsx",
-    "./heading": "./src/heading.tsx",
-    "./subHeading": "./src/subHeading.tsx",
-    "./input": "./src/input.tsx",
-    "./horizontalLine": "./src/horizontalLine.tsx",
-    "./testing": "./src/testing.tsx"
+    "./authButton": "./src/authComponents/authbutton.tsx",
+    "./heading": "./src/authComponents/heading.tsx",
+    "./subHeading": "./src/authComponents/subHeading.tsx",
+    "./input": "./src/authComponents/input.tsx",
+    "./horizontalLine": "./src/authComponents/horizontalLine.tsx",
+    "./card": "./src/card.tsx",
+    "./textInput": "./src/textInput.tsx",
+    "./select": "./src/select.tsx",
+    "./button": "./src/button.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

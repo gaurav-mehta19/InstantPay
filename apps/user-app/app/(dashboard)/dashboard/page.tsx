@@ -1,11 +1,9 @@
-import React from 'react';
+import { AddMoney } from "../../../components/addMoneyCard"
+
 
 export default function Dashboard() {
     return (
-        <div>
-            <div>
-                hi there from Dashboard
-            </div>
-        </div>
+       <AddMoney/>
     )
 } 
+

@@ -1,12 +1,14 @@
-import { ChangeEvent } from "react";
+"use client"
+
+import { ChangeEventHandler } from "react";
 
 interface InputProps {
     label: string;
     type?: string;
     placeholder: string;
-    className?: string;
-    value:string
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    value?:string      
+    onChange: ChangeEventHandler<HTMLInputElement>;
+   
 }
 export const Input = ({label,type,placeholder,value,onChange}:InputProps) =>{
     return <div>

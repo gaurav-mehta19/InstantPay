@@ -1,8 +1,8 @@
 "use client";
 
-import { Testing } from "@repo/ui/testing";
 import Balance from "../components/balance";
 import { signOut, useSession } from "next-auth/react";
+import { Card } from "@repo/ui/card";
 
 export default function Home() {
   const session = useSession();
@@ -10,7 +10,7 @@ export default function Home() {
     <div className="bg-[#0f0f10] h-screen">
           <div className="text-3xl bg-slate-300">Hi there</div>
           <div>
-            <Testing />
+
           </div>
           <Balance/>
           <div>
@@ -23,6 +23,13 @@ export default function Home() {
           </div>
           <div className="text-white w-80 border h-80 rounded-xl ml-10 text-center bg-[#18181a] border-neutral-500">
             hi
+          </div>
+          <div>
+            <Card title={"gaurav"}>
+             <Balance></Balance>
+            </Card>
+          </div>
+          <div>
           </div>
     </div>
 

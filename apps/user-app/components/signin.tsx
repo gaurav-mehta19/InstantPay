@@ -1,5 +1,5 @@
 "use client";
-import { PrimaryButton, SecondaryButton } from "@repo/ui/button";
+import { PrimaryButton, SecondaryButton } from "@repo/ui/authButton";
 import { Heading } from "@repo/ui/heading";
 import { SubHeading } from "@repo/ui/subHeading";
 import { Input } from "@repo/ui/input";

@@ -1,15 +1,15 @@
 "use client";
 import React from "react";
 import { signIn, signOut, useSession } from "next-auth/react"
-import { Appbar } from "./appbar"
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { AppBar } from "./appBar";
 
-export const AppbarClient = () => {
+export const AppBarClient = () => {
     const session = useSession()
     const router = useRouter()
     return (
-        <Appbar onsignIn={signIn} onsignOut={
+        <AppBar onsignIn={signIn} onsignOut={
             async()=>{
                 await signOut({redirect: false})
                 router.push("/users/signin")
