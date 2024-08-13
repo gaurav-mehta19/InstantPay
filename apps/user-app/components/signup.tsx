@@ -8,7 +8,7 @@ import { useState } from "react";
 import { SignupInputTypes } from "@repo/validation/input";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { signIn} from "next-auth/react";
 import { HorizontalLine } from "@repo/ui/horizontalLine";
 
 
@@ -46,7 +46,7 @@ export const SignupComponent = () => {
                 }
                 setData({ name: '', email: '', password: '' })
                 toast.success("User created successfully")
-                router.push('/')
+                router.push('/dashboard')
             }
         } catch (err) {
             console.log("Signup error ", err);
@@ -69,7 +69,9 @@ export const SignupComponent = () => {
                 }}></SecondaryButton>
 
             </div >
+            <div>
 
+            </div>
         </div >
     )
 }

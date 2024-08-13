@@ -42,9 +42,9 @@ export const NEXT_AUTH = {
                     throw new Error('Invalid password');
                 }
 
-                const passwrodMatch = await bcrypt.compare(password, userExist.password);
+                const passwordMatch = await bcrypt.compare(password, userExist.password);
 
-                if (!passwrodMatch) {
+                if (!passwordMatch) {
                     throw new Error('Invalid password');
                 }
 
@@ -87,11 +87,21 @@ export const NEXT_AUTH = {
             }
         })
     ],
-    secret: process.env.SECRET,
+    secret: process.env.JWT_SECRET,
     callbacks: {
-        async session({ token, session }: any) {
-            session.user.id = token.sub
-            return session
+        async jwt({ token, user }:any) {
+            if (user) {
+                token.sub = user.id;
+                token.email = user.email;
+                token.name = user.name;
+            }
+            return token;
+        },
+        async session({ token, session }:any) {
+            session.user.id = token.sub;
+            session.user.email = token.email;
+            session.user.name = token.name;
+            return session;
         }
     },
     pages: {

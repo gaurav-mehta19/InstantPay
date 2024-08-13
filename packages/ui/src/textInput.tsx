@@ -10,11 +10,11 @@ interface TextInputProps{
 
 export const TextInput = ({label,placeHolder,onChange}:TextInputProps) => {
     return (
-        <div>
-            <div>
+        <div className='bg-[#18181a]'>
+            <div className='text-neutral-200 mt-4 p-1'>
                 {label}
             </div>
-            <input className="w-96 h-7" type="text" placeholder={placeHolder} onChange={onChange}/>
+            <input className="w-full h-10 bg-[#18181a] border border-neutral-700 rounded-lg p-2 outline-none" type="text" placeholder={placeHolder} onChange={onChange}/>
         </div>
     )
 }

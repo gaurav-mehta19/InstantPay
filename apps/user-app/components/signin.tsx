@@ -39,7 +39,7 @@ export const SigninComponent = () => {
             } else {
                 setData({ email: '', password: '' })
                 toast.success("User signin successfully")
-                router.push('/')
+                router.push('/dashboard')
             }
         } catch (err) {
             console.log("Signup error ", err);

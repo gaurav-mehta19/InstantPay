@@ -1,6 +1,6 @@
 import prisma from "@repo/db/client";
 import { NextRequest, NextResponse } from "next/server";
-import { signupInput } from "@repo/validation/input"
+import { forgetPasswordInput, signupInput } from "@repo/validation/input"
 import bcrypt from "bcrypt";
 
 export async function POST(req: NextRequest) {
@@ -48,4 +48,12 @@ export async function POST(req: NextRequest) {
             { status: 500 }
         )
     }
+}
+
+export async function PUT(req:NextRequest){
+    const body = req.json()
+    const email = req.nextUrl.searchParams.get('email')
+
+    const { success } = forgetPasswordInput.safeParse(body)
+
 }

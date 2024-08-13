@@ -7,7 +7,7 @@ export function SideBarClient() {
     const isSideBarOpen = useSideBar()
 
     return (
-        <div className={`transform transition-width duration-300 ease-in-out ${isSideBarOpen ? "w-52" : "w-0"} overflow-hidden border-r min-h-screen border-red-500`}>
+        <div className={`transform transition-width duration-300 ease-in-out ${isSideBarOpen ? "w-56" : "w-0"} overflow-hidden border-r h-screen border-neutral-700 bg-[#18181a]`}>
             <div>
                 <SideBar href="/dashboard" icon={<HomeIcon />} title="Home" />
                 <SideBar href="/transaction" icon={<TransactionsIcon />} title="Transaction" />

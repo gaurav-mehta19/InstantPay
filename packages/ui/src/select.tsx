@@ -12,8 +12,8 @@ interface SelectProps{
 
 export const Select = ({options,onSelect}:SelectProps) => {
     return (
-        <select className="w-96 h-7" onChange={onSelect}>
-       {options.map(option => <option value={option.key}>{option.value}</option>)}
+        <select className="w-full h-10 border border-neutral-700 bg-[#18181a] rounded-lg p-1 mb-2 outline-none" onChange={onSelect}>
+       {options.map(option => <option key={option.key} value={option.value}>{option.value}</option>)}
         </select>
     )
 }
