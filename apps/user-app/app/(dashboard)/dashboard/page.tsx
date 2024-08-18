@@ -29,7 +29,11 @@ async function getTransaction() {
     const transaction = await prisma.onRampTransaction.findMany({
         where: {
             userId: session?.user?.id
-        }
+        },
+        orderBy: {
+            createdAt: 'desc', // Order by most recent first
+        },
+        take: 5, // Limit to the last 5 transactions
     })
 
     return transaction.map(t => ({
@@ -51,15 +55,18 @@ export default async function Dashboard() {
                     Dashboard
                 </div>
             </div>
-            <div className="grid grid-cols-8 gap-2 mt-8">
-                <div className="col-start-2 col-span-3">
+            <div className="grid grid-cols-8 gap-3 mt-8">
+                <div className="col-start-2 col-span-2">
                     <AddMoney />
                 </div>
-                <div className="col-start-auto col-span-3">
+                <div className="col-start-auto col-span-2">
+                    <BalanceCard amount={balance.amount} locked={balance.locked} />
+                </div>
+                <div className="col-start-auto col-span-2">
                     <BalanceCard amount={balance.amount} locked={balance.locked} />
                 </div>
             </div>
-            <div className="grid grid-cols-8 mt-6">
+            <div className="grid grid-cols-8 mt-6 ">
                 <div className="col-start-2 col-span-6">
                     <OnrampTransaction transaction={transaction} />
                 </div>

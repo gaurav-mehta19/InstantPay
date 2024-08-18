@@ -8,7 +8,7 @@ export const BalanceCard = ({amount,locked}:BalanceCardprops) => {
     return (
         <div className="text-neutral-400">
             <Card title="Balance">
-                <div className="flex justify-between border-b border-neutral-700 mt-12 mb-7 pb-1.5">
+                <div className="flex justify-between border-b border-neutral-700 mt-12 mb-6 pb-1.5">
                     <div className="text-neutral-200 ">
                         Unlocked Balance
                     </div>
@@ -16,7 +16,7 @@ export const BalanceCard = ({amount,locked}:BalanceCardprops) => {
                         {amount/100} INR
                     </div>
                 </div>
-                <div className="flex justify-between border-b border-neutral-700 mb-7 pb-1.5">
+                <div className="flex justify-between border-b border-neutral-700 mb-6 pb-1.5">
                     <div className="text-neutral-200">
                        Total Locked Balance
                     </div>

@@ -1,9 +1,9 @@
 "use client"
 import React from 'react';
-import { TertiaryButton } from '@repo/ui/authButton';
 import { usePathname, useRouter } from 'next/navigation';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { sideBarAtom } from '@repo/store/sideBar';
+import { Button } from '@repo/ui/button';
 
 
 interface AppBarProps {
@@ -36,8 +36,8 @@ export const AppBar = ({ onsignIn, onsignOut, user }: AppBarProps) => {
                 </div>
             </div>
             <div className='flex gap-6 mb-2'>
-                <TertiaryButton label='About' onClick={() => { router.push('/users/signup') }} className='w-16 h-8 border border-red-400 rounded-md mt-2 text-neutral-200' />
-                <TertiaryButton className='border border-red-400 w-20 h-8 mt-2 mr-8 text-neutral-200 rounded-md' onClick={user ? onsignOut : onsignIn} label={user ? "Logout" : "Sign In"} />
+                <Button label='About' onClick={() => { router.push('/users/signup') }} className='w-16 h-8 border border-red-400 rounded-md mt-2 text-neutral-200' />
+                <Button className='border border-red-400 w-20 h-8 mt-2 mr-8 text-neutral-200 rounded-md' onClick={user ? onsignOut : onsignIn} label={user ? "Logout" : "Sign In"} />
             </div>
         </div>
     )

@@ -15,9 +15,9 @@ export const SideBar = ({ href, title, icon }: SideBarprops) => {
 
     return (
         <div onClick={() => { router.push(href) }} className="flex justify-center items-center mt-10 gap-3 py-2 text-neutral-200  h-10 rounded-lg">
-            <div className=" w-40 flex gap-2 h-10 justify-center items-center hover:bg-[#2A2A2E] rounded-lg">
+            <div className=" w-40 flex gap-2 h-10 justify-center items-center rounded-lg">
                 <div>{icon}</div>
-                <div className="text-base font-medium">{title}</div>
+                <div className="text-base font-medium hover:text-xl">{title}</div>
             </div>
         </div>
     )
