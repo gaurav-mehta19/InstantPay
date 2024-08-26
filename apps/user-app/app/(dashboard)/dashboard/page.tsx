@@ -33,7 +33,7 @@ async function getTransaction() {
         orderBy: {
             createdAt: 'desc', // Order by most recent first
         },
-        take: 5, // Limit to the last 5 transactions
+        take: 8, // Limit to the last 5 transactions
     })
 
     return transaction.map(t => ({
@@ -55,20 +55,16 @@ export default async function Dashboard() {
                     Dashboard
                 </div>
             </div>
-            <div className="grid grid-cols-8 gap-3 mt-8">
-                <div className="col-start-2 col-span-2">
-                    <AddMoney />
+            <div className="grid grid-cols-10 gap-2 mt-8">
+                <div className="col-start-2 col-span-3">
+                    <div className="flex flex-col gap-2"> 
+                         <AddMoney />
+                         <BalanceCard amount={balance.amount} locked={balance.locked} />
+                    </div>
+                   
                 </div>
-                <div className="col-start-auto col-span-2">
-                    <BalanceCard amount={balance.amount} locked={balance.locked} />
-                </div>
-                <div className="col-start-auto col-span-2">
-                    <BalanceCard amount={balance.amount} locked={balance.locked} />
-                </div>
-            </div>
-            <div className="grid grid-cols-8 mt-6 ">
-                <div className="col-start-2 col-span-6">
-                    <OnrampTransaction transaction={transaction} />
+                <div className="col-start-auto col-span-5">
+                <OnrampTransaction transaction={transaction} />
                 </div>
             </div>
         </div>

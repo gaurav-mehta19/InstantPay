@@ -21,7 +21,7 @@ export const OnrampTransaction = ({ transaction }: OnrampTransactionProps) => {
     return (
         <Card title="Recent transaction">
             <div>
-                {transaction.map(t => <div className="flex justify-between mt-1.5 p-1.5 border-neutral-700 border-b max-h-64">
+                {transaction.map(t => <div className="flex justify-between mt-1.5 p-1.5 border-neutral-700 border-b">
                     <div className="text-neutral-300">
                         <div className="text-sm p-1">
                             Received INR
@@ -29,6 +29,12 @@ export const OnrampTransaction = ({ transaction }: OnrampTransactionProps) => {
                         <div className="text-xs px-1">
                             {t.time.toDateString()}
                         </div>
+                    </div>
+                    <div className="text-neutral-300">
+                        {t.provider}
+                    </div>
+                    <div className="text-neutral-300">
+                        {t.status}
                     </div>
                     <div className="text-green-500 text-sm p-1.5 mt-1.5">
                         + Rs {t.amount / 100}

@@ -2,6 +2,8 @@ import express from 'express';
 const app = express();
 import prisma from "@repo/db/client";
 
+app.use(express.json());
+
 app.post('/hdfcWebhook', async (req, res) => {
 
   const paymentInfromation = {
@@ -9,6 +11,7 @@ app.post('/hdfcWebhook', async (req, res) => {
     userId: req.body.user_identifier,
     amount: req.body.amount,
   };
+  
   try {
     await prisma.$transaction([
       prisma.balance.update({
@@ -22,7 +25,7 @@ app.post('/hdfcWebhook', async (req, res) => {
           }
         }
       }),
-
+      
       prisma.onRampTransaction.update({
         where: {
           token: paymentInfromation.token
@@ -32,11 +35,12 @@ app.post('/hdfcWebhook', async (req, res) => {
         }
       })
     ]);
-
+    
     res.json({
       message:"Captured"
     })
   }catch(e){
+    console.error(e);
     res.status(411).json({
       message:"Error while processing webhook"
     })
