@@ -5,11 +5,11 @@ const prisma = new PrismaClient()
 
 async function main(){
     const gaurav = await prisma.user.upsert({
-        where:{ email:"gaurav@gmail.com" },
+        where:{ phone:"2222222222" },
         update:{},
         create:{
             name:"gaurav",
-            email:"gaurav@gmail.com",
+            phone:"2222222222",
             password:await bcrypt.hash("123456789",12),
 
             balance:{
@@ -32,11 +32,11 @@ async function main(){
     })
 
     const unni = await prisma.user.upsert({
-        where:{ email:"unni@gmail.com" },
+        where:{ phone:"1111111111" },
         update:{},
         create:{
             name:"unni",
-            email:"unni@gmail.com",
+            phone:"1111111111",
             password:await bcrypt.hash("123456789",12),
 
             balance:{

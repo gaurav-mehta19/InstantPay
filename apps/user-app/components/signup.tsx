@@ -1,5 +1,5 @@
 "use client";
-import { PrimaryButton, SecondaryButton } from "@repo/ui/authButton";
+import { PrimaryButton } from "@repo/ui/authButton";
 import { Heading } from "@repo/ui/heading";
 import { SubHeading } from "@repo/ui/subHeading";
 import { Input } from "@repo/ui/input";
@@ -8,8 +8,7 @@ import { useState } from "react";
 import { SignupInputTypes } from "@repo/validation/input";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { signIn} from "next-auth/react";
-import { HorizontalLine } from "@repo/ui/horizontalLine";
+import { signIn } from "next-auth/react";
 
 
 
@@ -18,12 +17,12 @@ export const SignupComponent = () => {
 
     const [data, setData] = useState<SignupInputTypes>({
         name: '',
-        email: '',
+        phone: '',
         password: ''
     })
 
     async function handleSignup() {
-        if (data.name.trim().length < 1 || data.email.trim().length < 1 || data.password.trim().length < 1) {
+        if (data.name.trim().length < 1 || data.phone.trim().length < 1 || data.password.trim().length < 1) {
             toast.warning("Please fill all fields")
             return;
         }
@@ -36,7 +35,7 @@ export const SignupComponent = () => {
             }
             else {
                 const response = await signIn('credentials', {
-                    email: data.email,
+                    phone: data.phone,
                     password: data.password,
                     redirect: false
                 })
@@ -44,7 +43,7 @@ export const SignupComponent = () => {
                 if (response?.error) {
                     toast.error(response.error)
                 }
-                setData({ name: '', email: '', password: '' })
+                setData({ name: '', phone: '', password: '' })
                 toast.success("User created successfully")
                 router.push('/dashboard')
             }
@@ -60,13 +59,9 @@ export const SignupComponent = () => {
                 <Heading label="Create your account" />
                 <SubHeading label="Already have an account?" to="/users/signin" onclicktext="Signin" />
                 <Input value={data.name} onChange={(e) => setData({ ...data, name: e.target.value })} label="Name" placeholder="Enter your name" />
-                <Input value={data.email} onChange={(e) => setData({ ...data, email: e.target.value })} label="Email" placeholder="Enter your email" />
+                <Input value={data.phone} onChange={(e) => setData({ ...data, phone: e.target.value })} label="Phone Number" placeholder="Enter your number" />
                 <Input value={data.password} onChange={(e) => setData({ ...data, password: e.target.value })} label="Password" type="password" placeholder="Enter your password" />
                 <PrimaryButton label="Create an account" onClick={handleSignup}></PrimaryButton>
-                <HorizontalLine label="or" />
-                <SecondaryButton label="Sign up with Google" onClick={async () => {
-                     await signIn('google', { callbackUrl: 'http://localhost:3000' })
-                }}></SecondaryButton>
 
             </div >
             <div>

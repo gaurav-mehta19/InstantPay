@@ -12,17 +12,17 @@ export const NEXT_AUTH = {
         CredentialsProvider({
             name: 'Credentials',
             credentials: {
-                email: { label: "email", type: "text" },
+                phone: { label: "phone", type: "text" },
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials: any) {
 
-                if (!credentials.email || !credentials.password) {
+                if (!credentials.phone || !credentials.password) {
                     throw new Error('Invalid input');
                 }
-                const { email, password } = credentials;
+                const { phone, password } = credentials;
 
-                const { success } = signinInput.safeParse({ email, password });
+                const { success } = signinInput.safeParse({ phone, password });
 
                 if (!success) {
                     throw new Error('Invalid input');
@@ -30,7 +30,7 @@ export const NEXT_AUTH = {
 
                 const userExist = await prisma.user.findFirst({
                     where: {
-                        email: email
+                        phone: phone
                     }
                 });
 
@@ -50,7 +50,7 @@ export const NEXT_AUTH = {
 
                 return {
                     id: userExist.id,
-                    email: userExist.email,
+                    phone: userExist.phone,
                     name: userExist.name
                 }
             }
@@ -66,14 +66,14 @@ export const NEXT_AUTH = {
                 
                 const user = await prisma.user.findUnique({
                     where: {
-                        email: profile.email
+                        phone: profile.phone
                     }
                 })
 
                 if (!user) {
                     await prisma.user.create({
                         data: {
-                            email: profile.email,
+                            phone: profile.phone,
                             name: profile.name,
                         }
                     })
@@ -81,7 +81,7 @@ export const NEXT_AUTH = {
 
                 return {
                     id: profile.sub,
-                    email: profile.email,
+                    phone: profile.phone,
                     name: profile.name
                 }
             }
@@ -92,14 +92,14 @@ export const NEXT_AUTH = {
         async jwt({ token, user }:any) {
             if (user) {
                 token.sub = user.id;
-                token.email = user.email;
+                token.phone = user.phone;
                 token.name = user.name;
             }
             return token;
         },
         async session({ token, session }:any) {
             session.user.id = token.sub;
-            session.user.email = token.email;
+            session.user.phone = token.phone;
             session.user.name = token.name;
             return session;
         }
