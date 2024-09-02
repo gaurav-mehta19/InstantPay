@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
 
     const existingUser = await prisma.user.findFirst({
         where: {
-            email: body.email
+            phone: body.phone
         }
     });
     
@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
         const hashedPassword = await bcrypt.hash(body.password, 12);
         const newUser = await prisma.user.create({
             data: {
-                email: body.email,
+                phone: body.phone,
                 password: hashedPassword,
                 name: body.name
             }
@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({
             id: newUser.id,
             name: newUser.name,
-            email: newUser.email
+            phone: newUser.phone
         })
     }
     catch (err) {
@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req:NextRequest){
     const body = req.json()
-    const email = req.nextUrl.searchParams.get('email')
+    const phone = req.nextUrl.searchParams.get('phone')
 
     const { success } = forgetPasswordInput.safeParse(body)
 

@@ -26,12 +26,12 @@ export const AppBar = ({ onsignIn, onsignOut, user }: AppBarProps) => {
                 <button className='flex px-1 ml-3 rounded-lg text-neutral-200'>
                     <SideBarIconVisibility />
                 </button>
-                <div className='text-neutral-200'>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 mt-1 ml-2">
+                <div className='text-neutral-200 ml-4'>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#0052ff" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 mt-1 ml-2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
                     </svg>
                 </div>
-                <div onClick={() => { router.push('/landing') }} className='text-2xl font-semibold text-neutral-200'>
+                <div onClick={() => { router.push('/landing') }} className='text-2xl font-bold text-neutral-200'>
                     InstantPay
                 </div>
             </div>
