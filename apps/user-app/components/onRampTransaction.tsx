@@ -5,23 +5,25 @@ interface OnrampTransactionProps {
         time: Date,
         amount: number,
         status: string,
-        provider: string
+        provider: string,
+        id:string
     }[]
 }
 
 export const OnrampTransaction = ({ transaction }: OnrampTransactionProps) => {
     if (!transaction.length) {
         return <Card title="Recent transaction">
-            <div className="text-neutral-300 flex justify-center max-h-64 items-center min-h-96">
-                No Recent transaction
-            </div>
+          <div className="text-neutral-300 flex justify-center max-h-64 items-center" style={{ minHeight: '510px' }}>
+    No Recent transaction
+</div>
+
         </Card>
     }
 
     return (
         <Card title="Recent transaction">
-            <div>
-                {transaction.map(t => <div className="min-h-96">
+            <div  style={{minHeight:'510px'}}>
+                {transaction.map(t => <div key={t.id}>
                     <div className=" border-neutral-700 border-b flex justify-between mt-1.5 p-1.5">
                     <div className="text-neutral-300">
                         <div className="text-sm p-1">

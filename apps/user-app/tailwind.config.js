@@ -7,7 +7,11 @@ module.exports = {
     "../../packages/ui/**/*.{js,ts,jsx,tsx,mdx}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      minHeight: {
+        'custom': '120px', // or any other value you want
+      },
+    },
   },
   plugins: [],
 }

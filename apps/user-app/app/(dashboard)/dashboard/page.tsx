@@ -40,7 +40,8 @@ async function getTransaction() {
         time: t.createdAt,
         amount: t.amount,
         status: t.status,
-        provider: t.provider
+        provider: t.provider,
+        id: t.id
     }))
 }
 
