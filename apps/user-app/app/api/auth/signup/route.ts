@@ -53,7 +53,6 @@ export async function POST(req: NextRequest) {
 export async function PUT(req:NextRequest){
     const body = req.json()
     const phone = req.nextUrl.searchParams.get('phone')
-
     const { success } = forgetPasswordInput.safeParse(body)
 
 }
