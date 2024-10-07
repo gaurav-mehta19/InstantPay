@@ -11,7 +11,7 @@ export function SideBarClient() {
             <div>
                 <SideBar href="/dashboard" icon={<HomeIcon />} title="Home" />
                 <SideBar href="/transaction" icon={<TransactionsIcon />} title="Transaction" />
-                <SideBar href="/transfer" icon={<TransferIcon />} title="Transfer" />
+                <SideBar href="/transfer" icon={<TransferIcon />} title="P2P Transfer" />
                 <SideBar href="/transfer" icon={<ProfileIcon />} title="Profile" />
             </div>
         </div>

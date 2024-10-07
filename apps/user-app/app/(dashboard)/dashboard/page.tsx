@@ -11,7 +11,7 @@ import { NEXT_AUTH } from "../../../lib/auth"
 async function getBalance() {
     const session = await getServerSession(NEXT_AUTH)
     
-    const balance = await prisma.balance.findFirst({
+    const balance = await prisma.balance.findUnique({
         where: {
             userId: session?.user?.id
         }
