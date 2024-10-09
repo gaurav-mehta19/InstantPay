@@ -24,7 +24,7 @@ export const P2pCard = () => {
             <Button onClick={async()=>{
                 await p2pTransfer(data.phone,data.amount*100)
                 toast.success("Transfer successful")
-                router.push('/dashboard')
+                router.push('/dashboard')           
             }} className="border border-neutral-700 bg-slate-100 text-neutral-700 text-center w-28 h-8 mt-2  rounded-md hover:bg-slate-300 font-semibold" label="Send" />
             </div>
         </Card>
