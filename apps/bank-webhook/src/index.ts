@@ -4,6 +4,12 @@ import prisma from "@repo/db/client";
 
 app.use(express.json());
 
+app.get('/testing',async (req,res)=>{
+  res.status(200).json({
+    msg:"Testing Endpoint"
+  })
+})
+
 app.post('/hdfcWebhook', async (req, res) => {
 
   const paymentInfromation = {

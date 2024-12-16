@@ -2,14 +2,13 @@
 import { PrimaryButton } from "@repo/ui/authButton";
 import { Heading } from "@repo/ui/heading";
 import { SubHeading } from "@repo/ui/subHeading";
-import { Input } from "@repo/ui/input";
+import { Input, PhoneInput } from "@repo/ui/input";
 import axios from "axios";
 import { useState } from "react";
 import { SignupInputTypes } from "@repo/validation/input";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-
 
 
 export const SignupComponent = () => {
@@ -27,6 +26,7 @@ export const SignupComponent = () => {
             return;
         }
 
+        const loadingToastId = toast.loading("Signing up...")
         try {
             const res = await axios.post("http://localhost:3000/api/auth/signup", data)
 
@@ -40,6 +40,7 @@ export const SignupComponent = () => {
                     redirect: false
                 })
 
+                toast.dismiss(loadingToastId)
                 if (response?.error) {
                     toast.error(response.error)
                 }
@@ -53,13 +54,20 @@ export const SignupComponent = () => {
         }
     }
 
+    const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const phoneValue = e.target.value.replace(/\D/g, ''); 
+        if (phoneValue.length <= 10) {
+            setData({ ...data, phone: phoneValue });
+        }
+    }
+    
     return (
         <div className="flex justify-center items-center h-screen">
             <div className="flex flex-col gap-4 justify-center items-center w-3/6 h-5/6">
                 <Heading label="Create your account" />
                 <SubHeading label="Already have an account?" to="/users/signin" onclicktext="Signin" />
                 <Input value={data.name} onChange={(e) => setData({ ...data, name: e.target.value })} label="Name" placeholder="Enter your name" />
-                <Input value={data.phone} onChange={(e) => setData({ ...data, phone: e.target.value })} label="Phone Number" placeholder="Enter your number" />
+                <PhoneInput value={data.phone} maxLength={10} onChange={handlePhoneChange} label="Phone Number" placeholder="000-000-0000" />
                 <Input value={data.password} onChange={(e) => setData({ ...data, password: e.target.value })} label="Password" type="password" placeholder="Enter your password" />
                 <PrimaryButton label="Create an account" onClick={handleSignup}></PrimaryButton>
 
@@ -70,3 +78,5 @@ export const SignupComponent = () => {
         </div >
     )
 }
+
+

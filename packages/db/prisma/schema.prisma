@@ -34,7 +34,7 @@ model Balance{
 
 model OnRampTransaction {
   id String @id @default(cuid())
-  status OnRampStatus
+  status Status
   token String @unique
   provider String
   amount Int
@@ -47,13 +47,24 @@ model P2PTransaction {
   id String @id @default(cuid())
   fromUserId String
   toUserId String
+  status Status
   amount Int
   fromUser User @relation(name: "FromUserRealtion", fields: [fromUserId], references: [id])
   toUser User @relation(name: "ToUserRealtion", fields: [toUserId], references: [id])
+  direction String
   createdAt DateTime @default(now())
 }
 
-enum OnRampStatus {
+model Bank {
+  id String @id @default(cuid())
+  accountNumber String @unique
+  balance Int
+  name String
+  userID String 
+  password String
+}
+
+enum Status {
   Processing
   Success
   Failed

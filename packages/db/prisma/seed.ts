@@ -24,7 +24,7 @@ async function main(){
                     createdAt:new Date(),
                     status:"Success",
                     amount:20000,
-                    token:"token_1",
+                    token:"adscjsmwbdskucaygdv",
                     provider:"HDFC Bank"
                 }
             }
@@ -51,7 +51,7 @@ async function main(){
                     createdAt:new Date(),
                     status:"Success",
                     amount:200000,
-                    token:"token_2",
+                    token:"csdjedbfliwvuergbfqlbcuiawsdvfc",
                     provider:"HDFC Bank"
                 }
             }
