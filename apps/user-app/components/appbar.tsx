@@ -31,13 +31,13 @@ export const AppBar = ({ onsignIn, onsignOut, user }: AppBarProps) => {
                         <path strokeLinecap="round" strokeLinejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
                     </svg>
                 </div>
-                <div onClick={() => { router.push('/landing') }} className='text-2xl font-medium text-[#0052FF]'>
+                <div onClick={() => { router.push('/landing') }} className='text-2xl font-medium text-[#1a56db]'>
                     InstantPay
                 </div>
             </div>
             <div className='flex gap-4 mb-3'>
-                <Button label='About' onClick={() => { router.push('/users/signup') }} className='border border-neutral-200 bg-[#0052FF] text-white text-base text-center mt-2 w-28 h-8 rounded-md hover:bg-[#336DFF] transition-colors duration-100 shadow-2xl font-medium' />
-                <Button className='border border-[#0052FF] bg-[#FFFFFF] text-[#0052FF] text-center mt-2 w-28 h-8 text-base rounded-md hover:bg-gray-100 transition-colors duration-100 shadow-2xl font-medium mr-8' onClick={user ? onsignOut : onsignIn} label={user ? "Logout" : "Sign In"} />
+                <Button label='About' onClick={() => { router.push('/users/signup') }} className='border border-neutral-200 bg-[#1a56db] text-white text-base text-center mt-2 w-28 h-8 rounded-md hover:bg-[#336DFF] transition-colors duration-100 shadow-2xl font-medium' />
+                <Button className='border border-[#1a56db] bg-[#FFFFFF] text-[#1a56db] text-center mt-2 w-28 h-8 text-base rounded-md hover:bg-gray-100 transition-colors duration-100 shadow-2xl font-medium mr-8' onClick={user ? onsignOut : onsignIn} label={user ? "Logout" : "Sign In"} />
             </div>
         </div>
     )

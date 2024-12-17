@@ -37,7 +37,7 @@ export const P2pCard = () => {
                 toast.dismiss(loadingToastId)
                 toast.success("Transfer successful")
                 router.push('/dashboard')           
-            }} className="border border-neutral-700 bg-[#0052FF] text-white text-base w-96 h-10 mt-2.5 rounded-md hover:bg-[#336DFF] transition-colors duration-300 shadow-2xl font-medium" label="Send Money" />
+            }} className="border border-neutral-700 bg-[#1a56db] text-white text-base w-96 h-10 mt-2.5 rounded-md hover:bg-[#336DFF] transition-colors duration-300 shadow-2xl font-medium" label="Send Money" />
             </div>
         </Card>
         </div>

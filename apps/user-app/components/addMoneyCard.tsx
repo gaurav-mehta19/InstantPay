@@ -63,7 +63,7 @@ export const AddMoney = () => {
                     value: x.name,
                 }))} />
                 <div className="flex justify-center items-center">
-                    <Button className="border border-neutral-200 bg-[#0052FF] text-white text-center w-full h-10 mt-3 rounded-lg hover:bg-[#336DFF] transition-colors duration-300 shadow-2xl font-medium" label="Add Money" onClick={handleAddMoney} />
+                    <Button className="border border-neutral-200 bg-[#1a56db] text-white text-center w-full h-10 mt-3 rounded-lg hover:bg-[#336DFF] transition-colors duration-300 shadow-2xl font-medium" label="Add Money" onClick={handleAddMoney} />
                 </div>
             </Card>
         </div>

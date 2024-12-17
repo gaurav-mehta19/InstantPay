@@ -7,8 +7,8 @@ interface ProfileProps{
 
 export const Profile = ({name,phone}:ProfileProps) =>{
     return <Card title="Profile">
-        <div>Update your personal information</div>
-        <div >Name : <span>{name}</span></div>
-        <div>Phone : <span>{phone}</span></div>
+        <div className="text-neutral-400 mb-5">Update your personal information</div>
+        <div className="text-lg  text-[#1a56db] mb-4"><span className="font-semibold">Name :</span> <span className="font-normal text-black">{name}</span></div>
+        <div className="text-lg  text-[#1a56db] mb-4"><span className="font-semibold">Phone : </span><span className="text-black font-normal">{phone}</span></div>
     </Card>
 }
