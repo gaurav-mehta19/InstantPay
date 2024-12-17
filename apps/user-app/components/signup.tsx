@@ -9,7 +9,7 @@ import { SignupInputTypes } from "@repo/validation/input";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-
+import { createBalance } from "../lib/actions/balance";
 
 export const SignupComponent = () => {
     const router = useRouter()
@@ -21,6 +21,11 @@ export const SignupComponent = () => {
     })
 
     async function handleSignup() {
+        const formattedName = data.name.trim().charAt(0).toUpperCase() + data.name.trim().slice(1);
+
+        // Ensure data is updated with the formatted name
+        const formattedData = { ...data, name: formattedName };
+
         if (data.name.trim().length < 1 || data.phone.trim().length < 1 || data.password.trim().length < 1) {
             toast.warning("Please fill all fields")
             return;
@@ -28,7 +33,7 @@ export const SignupComponent = () => {
 
         const loadingToastId = toast.loading("Signing up...")
         try {
-            const res = await axios.post("http://localhost:3000/api/auth/signup", data)
+            const res = await axios.post("http://localhost:3000/api/auth/signup", formattedData)
 
             if (res.data.error) {
                 toast.error(res.data.error)
@@ -45,6 +50,7 @@ export const SignupComponent = () => {
                     toast.error(response.error)
                 }
                 setData({ name: '', phone: '', password: '' })
+                await createBalance()
                 toast.success("User created successfully")
                 router.push('/dashboard')
             }

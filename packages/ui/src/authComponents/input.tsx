@@ -16,15 +16,15 @@ interface InputProps {
 export const PhoneInput = ({ label, type, placeholder, maxLength, value, onChange }: InputProps) => {
     return (
         <div className="relative">
-            <div className="text-neutral-200 text-lg font-normal">{label}</div>
+            <div className="text-[#OADBOD] text-lg font-normal">{label}</div>
             <div className="relative">
-                <span className="absolute left-0 top-1/2 transform -translate-y-1/2 text-[#CCCCCC] text-md pb-1 px-3">+91</span>
+                <span className="absolute left-0 top-1/2 transform -translate-y-1/2 text-[#OADBOD] text-md pb-1 px-3">+91</span>
                 <input
                     type={type || "text"}
                     value={value}
                     maxLength={maxLength}
                     placeholder={placeholder}
-                    className="h-10 w-96 pt-4 pb-4 pl-12 pr-3 mt-1 mb-2 text-[#CCCCCC] bg-[#0f0f10] border-neutral-700 border rounded-md text-left outline-none"
+                    className="h-10 w-96 pt-4 pb-4 pl-12 pr-3 mt-1 mb-2 text-[#OADBOD] bg-[#FFFFFF] border-neutral-200 border rounded-md text-left outline-none"
                     onChange={onChange}
                 />
             </div>
@@ -36,10 +36,10 @@ export const PhoneInput = ({ label, type, placeholder, maxLength, value, onChang
 
 export const Input = ({label,type,placeholder,value,onChange}:InputProps) =>{
     return <div>
-        <div className="text-neutral-200 text-lg font-normal">
+        <div className="text-[#OADBOD] text-lg font-normal">
             {label}
         </div>
-        <input type={type||"text"} value={value} className="h-10 w-96 pt-4 pb-4 pl-3 pr-3 mt-1.5 mb-2 text-neutral-100 bg-[#0f0f10] border-neutral-700 border rounded-md text-left outline-none " placeholder={placeholder} onChange={onChange} />
+        <input type={type||"text"} value={value} className="h-10 w-96 pt-4 pb-4 pl-3 pr-3 mt-1.5 mb-2 text-[#OADBOD] bg-[#FFFFFF] border-neutral-200 border rounded-md text-left outline-none " placeholder={placeholder} onChange={onChange} />
     </div>
 }
 

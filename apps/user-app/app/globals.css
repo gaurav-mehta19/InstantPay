@@ -3,3 +3,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Define specific min-height styles for each route */
+.route1-min-height {
+    min-height: 400px; /* Minimum height for /route1 */
+}
+
+.route2-min-height {
+    min-height: 600px; /* Minimum height for other routes */
+}

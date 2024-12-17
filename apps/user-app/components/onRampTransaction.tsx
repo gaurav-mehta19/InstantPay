@@ -12,8 +12,8 @@ interface OnrampTransactionProps {
 
 export const OnrampTransaction = ({ transaction }: OnrampTransactionProps) => {
     if (!transaction.length) {
-        return <Card title="Recent transaction">
-            <div className="text-neutral-300 flex justify-center max-h-64 items-center" style={{ minHeight: '510px' }}>
+        return <Card title="Bank transaction">
+            <div className="text-[#OADBOD] flex justify-center max-h-64 items-center" style={{ minHeight: '525px' }}>
                 No Recent transaction
             </div>
         </Card>
@@ -33,11 +33,11 @@ export const OnrampTransaction = ({ transaction }: OnrampTransactionProps) => {
     };
 
     return (
-        <Card title="Recent transaction">
-            <div style={{ minHeight: '510px' }}>
+        <Card title="Bank transaction">
+            <div style={{minHeight:'525px'}}>
                 {transaction.map(t => <div key={t.id}>
-                    <div className=" border-neutral-700 border-b flex justify-between mt-1.5 p-1.5">
-                        <div className="text-neutral-300">
+                    <div className=" border-neutral-200 border-b flex justify-between mt-1.5 p-1.5">
+                        <div className=" text-[#OADBOD]">
                             <div className="text-md p-1">
                                 Received INR
                             </div>
@@ -45,8 +45,8 @@ export const OnrampTransaction = ({ transaction }: OnrampTransactionProps) => {
                                 {t.time.toDateString()}
                             </div>
                         </div>
-                        <div className="text-neutral-300 mt-2" style={{color:getStatusColor(t.status)}}>
-                            {t.status}
+                        <div className=" text-[#OADBOD] mt-2">
+                           Status : <span  style={{color:getStatusColor(t.status)}}>{t.status}</span>
                         </div>
                         <div className="text-green-500 text-sm p-1.5 mt-1.5">
                             + Rs {t.amount / 100}

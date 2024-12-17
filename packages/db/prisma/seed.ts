@@ -8,7 +8,7 @@ async function main(){
         where:{ phone:"2222222222" },
         update:{},
         create:{
-            name:"gaurav",
+            name:"Gaurav",
             phone:"2222222222",
             password:await bcrypt.hash("123456789",12),
 
@@ -35,7 +35,7 @@ async function main(){
         where:{ phone:"1111111111" },
         update:{},
         create:{
-            name:"unni",
+            name:"Unni",
             phone:"1111111111",
             password:await bcrypt.hash("123456789",12),
 

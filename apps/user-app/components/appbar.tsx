@@ -21,23 +21,23 @@ export const AppBar = ({ onsignIn, onsignOut, user }: AppBarProps) => {
     }
 
     return (
-        <div className='bg-[#0f0f10] flex justify-between items-center border-b border-neutral-700'>
+        <div className='bg-[#FFFFFF] flex justify-between items-center border-b border-neutral-200'>
             <div className='flex gap-0.5'>
                 <button className='flex px-1 ml-3 rounded-lg text-neutral-200'>
                     <SideBarIconVisibility />
                 </button>
-                <div className='text-neutral-200 ml-4'>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="#0052ff" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 mt-1 ml-2">
+                <div className='ml-2'>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#99B1F3" viewBox="0 0 24 24" strokeWidth={1.5} stroke="" className="size-6 mt-1 ml-2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
                     </svg>
                 </div>
-                <div onClick={() => { router.push('/landing') }} className='text-2xl font-bold text-neutral-200'>
+                <div onClick={() => { router.push('/landing') }} className='text-2xl font-medium text-[#0052FF]'>
                     InstantPay
                 </div>
             </div>
-            <div className='flex gap-6 mb-2'>
-                <Button label='About' onClick={() => { router.push('/users/signup') }} className='w-16 h-8 border border-red-400 rounded-md mt-2 text-neutral-200' />
-                <Button className='border border-red-400 w-20 h-8 mt-2 mr-8 text-neutral-200 rounded-md' onClick={user ? onsignOut : onsignIn} label={user ? "Logout" : "Sign In"} />
+            <div className='flex gap-4 mb-3'>
+                <Button label='About' onClick={() => { router.push('/users/signup') }} className='border border-neutral-200 bg-[#0052FF] text-white text-base text-center mt-2 w-28 h-8 rounded-md hover:bg-[#336DFF] transition-colors duration-100 shadow-2xl font-medium' />
+                <Button className='border border-[#0052FF] bg-[#FFFFFF] text-[#0052FF] text-center mt-2 w-28 h-8 text-base rounded-md hover:bg-gray-100 transition-colors duration-100 shadow-2xl font-medium mr-8' onClick={user ? onsignOut : onsignIn} label={user ? "Logout" : "Sign In"} />
             </div>
         </div>
     )
@@ -50,7 +50,7 @@ function ClosedSideBarIcon() {
 
     return <div onClick={() => {
         setIsSideBarOpen(true)
-    }}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6 mt-1">
+    }}><svg xmlns="http://www.w3.org/2000/svg" fill="#99B1F3" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#0052FF" className="size-6 mt-1">
             <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
         </svg>
     </div>
@@ -62,7 +62,7 @@ function OpenSideBarIcon() {
 
     return <div onClick={() => {
         setIsSideBarOpen(false)
-    }}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6 mt-1">
+    }}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#0052FF" className="size-6 mt-1">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
         </svg>
     </div>

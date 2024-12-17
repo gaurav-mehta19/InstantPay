@@ -10,7 +10,7 @@ interface SubHeadingProps {
 export const SubHeading = ({label,to,onclicktext}:SubHeadingProps) => {
     const router = useRouter();
     return (
-        <div className='font-sans flex gap-2 text-neutral-200 text-base mb-6'>
+        <div className='font-sans flex gap-2 text-[#OADBOD] text-base mb-6'>
             <div>
                 {label}
             </div>

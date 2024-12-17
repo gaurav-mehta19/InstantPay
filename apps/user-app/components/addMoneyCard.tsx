@@ -52,10 +52,10 @@ export const AddMoney = () => {
     }
 
     return (
-        <div className="text-neutral-400">
+        <div className="text-[#OADBOD]">
             <Card title="Add Money">
                 <TextInput label="Amount" placeHolder="Amount" onChange={(e) => { setAmount(Number(e.target.value)) }} />
-                <div className="mt-2 p-1 text-neutral-200">
+                <div className="mt-2 p-1 text-[#OADBOD]">
                     Bank
                 </div>
                 <Select onSelect={handleOnSelect} options={SUPPORTED_BANKS.map(x => ({
@@ -63,7 +63,7 @@ export const AddMoney = () => {
                     value: x.name,
                 }))} />
                 <div className="flex justify-center items-center">
-                    <Button className="border border-neutral-700 bg-slate-100 text-neutral-700 text-center w-28 h-8 mt-2  rounded-md hover:bg-slate-300 font-semibold" label="Add Money" onClick={handleAddMoney} />
+                    <Button className="border border-neutral-200 bg-[#0052FF] text-white text-center w-full h-10 mt-3 rounded-lg hover:bg-[#336DFF] transition-colors duration-300 shadow-2xl font-medium" label="Add Money" onClick={handleAddMoney} />
                 </div>
             </Card>
         </div>

@@ -25,7 +25,7 @@ export const P2pCard = () => {
 
     return (
         <div className="flex justify-center items-center w-screen h-screen">
-        <Card title="P2P Transfer" className="h-64 w-96 text-gray-400 mt-6">
+        <Card title="P2P Transfer" className="h-80 w-full text-[#OADBOD] mt-6">
             <div className="flex flex-col gap-4">
             <PhoneInput value={data.phone} maxLength={10} onChange={handlePhoneChange} label="Phone Number" placeholder="000-000-0000" />
             <Input onChange={(e) => setData({ ...data, amount:Number(e.target.value)})} label="Amount" placeholder="Enter your amount" />
@@ -37,7 +37,7 @@ export const P2pCard = () => {
                 toast.dismiss(loadingToastId)
                 toast.success("Transfer successful")
                 router.push('/dashboard')           
-            }} className="border border-neutral-700 bg-slate-100 text-neutral-700 text-base w-96 h-10 mt-2.5 rounded-md hover:bg-slate-300 font-medium" label="Send Money" />
+            }} className="border border-neutral-700 bg-[#0052FF] text-white text-base w-96 h-10 mt-2.5 rounded-md hover:bg-[#336DFF] transition-colors duration-300 shadow-2xl font-medium" label="Send Money" />
             </div>
         </Card>
         </div>

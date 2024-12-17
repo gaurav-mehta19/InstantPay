@@ -1,39 +1,76 @@
+"use client"
 import { Card } from "@repo/ui/card"
+import { usePathname } from "next/navigation";
 
 interface P2PTransactionProps {
-    transaction:{
-        time:Date,
-        amount:number,
-        status:string,
-        toUserId:string,
-        fromUserId:string,
-        direction:string,
-        id:string
+    transaction: {
+        time: Date,
+        amount: number,
+        status: string,
+        toUserId: string,
+        fromUserId: string,
+        direction: string,
+        id: string,
+        toUserName: string,
+        toUserPhone: string,
     }[];
-    currentUserId:string
 }
 
 
 export const P2pTransaction = ({ transaction }: P2PTransactionProps) => {
+    const pathName = usePathname()
+    const minHeight = pathName==="/dashboard" ? "min-h-[320px]":"min-h-[525px]"
+
+    if (!transaction.length) {
+        return <Card title="Bank transaction">
+            <div className={`text-[#OADBOD] flex justify-center max-h-64 items-center ${minHeight}`}>
+                No Recent transaction
+            </div>
+        </Card>
+    }
+
+
+    const getStatusColor = (status: string) => {
+        switch (status.toLowerCase()) {
+            case "success":
+                return "#10B981";
+            case "fail":
+                return "#EF4444"; 
+            case "processing":
+                return "#F59E0B"; 
+            default:
+                return "text-neutral-300"; 
+        }
+    }; 
+
     return (
         <Card title="P2P Transaction">
-            <div>
+            <div className={minHeight}>
                 {transaction.map(t => (
-                    <div key={t.id} className="flex justify-between">
-                        <div className="text-neutral-300">
+                    <div key={t.id} className="flex justify-between gap-3 border-b border-neutral-200 mt-2">
+                        <div className=" text-[#111827]">
                             <div className="text-md p-1">{t.direction === "send" ? "Send INR" : "Received INR"}</div>
                             <div className="text-xs px-1">{t.time.toDateString()}</div>
                         </div>
-                        <div>
-                            {t.direction === "send" ? `to: ${t.toUserId}` : `from: ${t.fromUserId}`}
+                        <div className=" text-[#OADBOD]">
+                            {t.direction === "send" ? (
+                                <>
+                                    <div className="text-md p-1">To : {t.toUserName.charAt(0).toUpperCase() + t.toUserName.slice(1)}</div>
+                                    <div className="text-xs px-1 text-center">Number : {t.toUserPhone}</div>
+                                </>
+                            ) : (
+                                <>
+                                    <div className="text-md p-1">From : {t.toUserName.charAt(0).toUpperCase() + t.toUserName.slice(1)}</div>
+                                    <div className="text-xs px-1 text-center">Number : {t.toUserPhone}</div>
+                                </>
+                            )}
                         </div>
-                        <div className="text-neutral-500 text-xs p-1.5">
-                            Status: {t.status}
+                        <div className=" text-[#OADBOD] text-md py-4">
+                            Status :<span style={{color:getStatusColor(t.status)}}> {t.status}</span>
                         </div>
                         <div
-                            className={`text-sm p-1.5 mt-1.5 ${
-                                t.direction === "send" ? "text-red-500" : "text-green-500"
-                            }`}
+                            className={`text-sm py-5  ${t.direction === "send" ? "text-red-500" : "text-emerald-500"
+                                }`}
                         >
                             {t.direction === "send"
                                 ? `- Rs ${Math.abs(t.amount) / 100}`

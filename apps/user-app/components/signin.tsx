@@ -70,7 +70,7 @@ export const SigninComponent = () => {
                 <PhoneInput value={data.phone} maxLength={10} onChange={handlePhoneChange} label="Phone Number" placeholder="000-000-0000" />
                 <Input value={data.password} onChange={(e) => setData({ ...data, password: e.target.value })} label="Password" type="password" placeholder="Enter your password" />
                 <div className="text-right ml-60 -mt-3">
-                <div className="text-neutral-200 hover:underline">Forget password?</div>
+                <div className="text-[#OADBOD] hover:underline">Forget password?</div>
                 </div>
                 <PrimaryButton label="Sign in" onClick={handleSignin}></PrimaryButton>
                
