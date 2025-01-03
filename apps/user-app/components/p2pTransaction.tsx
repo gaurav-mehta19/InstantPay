@@ -22,7 +22,7 @@ export const P2pTransaction = ({ transaction }: P2PTransactionProps) => {
     const minHeight = pathName==="/dashboard" ? "min-h-[320px]":"min-h-[525px]"
 
     if (!transaction.length) {
-        return <Card title="Bank transaction">
+        return <Card title="P2P transaction">
             <div className={`text-[#OADBOD] flex justify-center max-h-64 items-center ${minHeight}`}>
                 No Recent transaction
             </div>
