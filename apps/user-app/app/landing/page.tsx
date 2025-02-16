@@ -1,11 +1,10 @@
+import { LandingPage } from "../../components/landing";
 
 
 export default function Landing() {
     return (
         <div>
-            <div>
-                this is Landing page
-             </div>
+            <LandingPage></LandingPage>
         </div>
     )
 }

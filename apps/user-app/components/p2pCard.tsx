@@ -31,13 +31,29 @@ export const P2pCard = () => {
             <Input onChange={(e) => setData({ ...data, amount:Number(e.target.value)})} label="Amount" placeholder="Enter your amount" />
             </div>
             <div className="flex justify-center items-center mt-4">
-            <Button onClick={async()=>{
-                const loadingToastId = toast.loading("Transferring...");
-                await p2pTransfer(data.phone,data.amount*100)
-                toast.dismiss(loadingToastId)
-                toast.success("Transfer successful")
-                router.push('/dashboard')           
-            }} className="border border-neutral-700 bg-[#1a56db] text-white text-base w-96 h-10 mt-2.5 rounded-md hover:bg-[#336DFF] transition-colors duration-300 shadow-2xl font-medium" label="Send Money" />
+            <Button     onClick={async () => {
+        const loadingToastId = toast.loading("Transferring...");
+
+        try {
+            const response = await p2pTransfer(data.phone, data.amount * 100);
+            
+            toast.dismiss(loadingToastId);
+
+            if (response?.message) {
+                toast.success(response.message);
+            } else {
+                toast.error("Something went wrong");
+            }
+
+            if (response.message === "Transaction successful") {
+                router.push('/dashboard');
+            }
+        } catch (error) {
+            toast.dismiss(loadingToastId);
+            toast.error("An error occurred during the transfer");
+        }
+    }}
+    className="border border-neutral-700 bg-[#1a56db] text-white text-base w-96 h-10 mt-2.5 rounded-md hover:bg-[#336DFF] transition-colors duration-300 shadow-2xl font-medium" label="Send Money" />
             </div>
         </Card>
         </div>

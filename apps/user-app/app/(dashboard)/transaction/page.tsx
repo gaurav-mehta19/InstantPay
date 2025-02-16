@@ -12,8 +12,7 @@ export async function getP2Ptransaction() {
     // Fetch P2P transactions where fromUserId matches the current user's id
     const p2pTransaction = await prisma.p2PTransaction.findMany({
         where: {
-                 fromUserId: session?.user?.id ,
-                 
+                 fromUserId: session?.user?.id ,       
         },
         orderBy: {
             createdAt: 'desc', // Order by most recent first
@@ -78,13 +77,13 @@ async function getTransaction() {
 // Main Transaction Page Component
 export default async function Transaction() {
     const p2ptransaction = await getP2Ptransaction(); // Fetch and process transactions
-    const onRampTransaction = await getTransaction()
+    const onRampTransaction = await getTransaction()     
 
     // Render the transactions
     return (
         <div className='w-screen'>
         <div className="grid grid-cols-10 gap-3 mt-10">
-            <div className="col-start-2 col-span-4" style={{minHeight:'525px'}}>
+            <div className="col-start-2 col-span-4 min-height-525">
                 <P2pTransaction transaction={p2ptransaction} />
             </div>
             <div className="col-start-auto col-span-4">

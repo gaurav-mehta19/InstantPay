@@ -22,7 +22,7 @@ export const OnrampTransaction = ({ transaction }: OnrampTransactionProps) => {
     const getStatusColor = (status: string) => {
         switch (status.toLowerCase()) {
             case "success":
-                return "#098551";
+                return "#10B981";
             case "fail":
                 return "#CF202F"; 
             case "processing":
@@ -48,7 +48,7 @@ export const OnrampTransaction = ({ transaction }: OnrampTransactionProps) => {
                         <div className=" text-[#OADBOD] mt-2">
                            Status : <span  style={{color:getStatusColor(t.status)}}>{t.status}</span>
                         </div>
-                        <div className="text-green-500 text-sm p-1.5 mt-1.5">
+                        <div className="text-emerald-500 text-sm p-1.5 mt-1.5">
                             + Rs {t.amount / 100}
                         </div>
                     </div>

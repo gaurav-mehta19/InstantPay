@@ -10,6 +10,6 @@ export default async function Page() {
     redirect("/dashboard");
   } else {
     // Redirect to the external URL for unauthenticated users
-    redirect("/");
+    redirect("/landing");
   }
 }

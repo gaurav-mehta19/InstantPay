@@ -7,7 +7,7 @@ interface BalanceCardprops{
 export const BalanceCard = ({amount,locked}:BalanceCardprops) => {
     return (
         <div>
-            <Card title="Balance">
+            <Card title="Balance" className="max-h-72">
                 <div className="flex justify-between border-b border-neutral-200 mt-10 mb-6 pb-2">
                     <div className=" text-[#OADBOD] ">
                         Unlocked Balance

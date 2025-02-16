@@ -4,6 +4,9 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { sideBarAtom } from '@repo/store/sideBar';
 import { Button } from '@repo/ui/button';
+import { Menu } from 'lucide-react';
+import { WalletMinimal } from 'lucide-react';
+import Link from 'next/link';
 
 
 interface AppBarProps {
@@ -23,21 +26,20 @@ export const AppBar = ({ onsignIn, onsignOut, user }: AppBarProps) => {
     return (
         <div className='bg-[#FFFFFF] flex justify-between items-center border-b border-neutral-200'>
             <div className='flex gap-0.5'>
-                <button className='flex px-1 ml-3 rounded-lg text-neutral-200'>
+                <button className='flex px-1 ml-3 rounded-lg text-neutral-200' title='Toggle Sidebar'>
                     <SideBarIconVisibility />
                 </button>
                 <div className='ml-2'>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="#99B1F3" viewBox="0 0 24 24" strokeWidth={1.5} stroke="" className="size-6 mt-1 ml-2">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z" />
-                    </svg>
+                <WalletMinimal  className='text-[#1a56db] ml-5 w-8 h-7 mt-1 mr-0.5'/>
                 </div>
-                <div onClick={() => {window.location.href="/"}} className='text-2xl font-medium text-[#1a56db]'>
+                <div onClick={() => {window.location.href="/"}} className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/80 to-secondary mt-0.5">
                     InstantPay
                 </div>
             </div>
-            <div className='flex gap-4 mb-3'>
-                <Button label='About' onClick={() => { router.push('/users/signup') }} className='border border-neutral-200 bg-[#1a56db] text-white text-base text-center mt-2 w-28 h-8 rounded-md hover:bg-[#336DFF] transition-colors duration-100 shadow-2xl font-medium' />
-                <Button className='border border-[#1a56db] bg-[#FFFFFF] text-[#1a56db] text-center mt-2 w-28 h-8 text-base rounded-md hover:bg-gray-100 transition-colors duration-100 shadow-2xl font-medium mr-8' onClick={user ? onsignOut : onsignIn} label={user ? "Logout" : "Sign In"} />
+            <div className='flex gap-3 items-center justify-center m-2'>
+                <DecideSideICon/>
+                <Button label='Sign up' onClick={() => { router.push('/users/signup') }} className='bg-white text-[#1a56db] text-center w-24 m-1 h-10 rounded-md hover:bg-blue-100 transition-colors duration-100' />
+                <Button className='border border-[#1a56db]  text-white text-center w-24 m-1 h-10 bg-[#1a56db] rounded-md hover:bg-[#1a56db]/90 transition-colors duration-100 shadow-2xl mr-20' onClick={user ? onsignOut : onsignIn} label={user ? "Sign out" : "Sign In"} />
             </div>
         </div>
     )
@@ -50,9 +52,7 @@ function ClosedSideBarIcon() {
 
     return <div onClick={() => {
         setIsSideBarOpen(true)
-    }}><svg xmlns="http://www.w3.org/2000/svg" fill="#99B1F3" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#0052FF" className="size-6 mt-1">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-        </svg>
+    }}><Menu className='h-8 w-8 text-[#1a56db] '/>
     </div>
 }
 
@@ -62,7 +62,7 @@ function OpenSideBarIcon() {
 
     return <div onClick={() => {
         setIsSideBarOpen(false)
-    }}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#0052FF" className="size-6 mt-1">
+    }}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#0052FF" className="size-8">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
         </svg>
     </div>
@@ -83,4 +83,20 @@ function SideBarIconVisibility() {
     return <div>
         <DecideSideBarIcon />
     </div>
+}
+
+function DecideSideICon(){
+    const pathName = usePathname()
+
+    const hiddenPaths = ["/landing"];
+
+    if (hiddenPaths.includes(pathName)) {
+        return (
+            <div className='flex gap-6 items-center justify-center m-1'>
+            <Link href="#features" className="text-gray-500 hover:text-primary transition-colors">Features</Link>
+            <Link href="#benefits" className="text-gray-500 hover:text-primary transition-colors">Benefits</Link>
+            </div>
+        )
+    }
+    return null
 }

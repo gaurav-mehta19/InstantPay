@@ -29,7 +29,7 @@ export async function p2pTransfer(to: string, amount: number) {
         });
 
         if (!fromBalance || fromBalance.amount < amount) {
-            throw new Error("Insufficient Balance");
+            return { message : "Insufficient Balance"};
         }
 
         // Decrement the sender's balance

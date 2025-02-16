@@ -9,7 +9,7 @@ export const SideBarClient: React.FC = () => {
     <div
       className={`transform transition-all duration-150 ease-in-out ${
         isSideBarOpen ? "w-52" : "w-0"
-      } overflow-hidden border border-neutral-200 shadow-sm h-screen bg-white`}
+      } overflow-hidden border-r border-neutral-200 shadow-sm h-screen bg-white`}
     >
       <SideBar href="/dashboard" icon={<HomeIcon />} title="Home" />
       <SideBar href="/transaction" icon={<TransactionsIcon />} title="Transaction" />
