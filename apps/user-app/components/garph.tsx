@@ -16,7 +16,7 @@ export function BalanceChart({ data }: BalanceChartProps) {
 
   return (
     <Card title="Balance History">
-        <div className="h-[300px]">
+        <div className="h-[320px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={last9Data}>
               <XAxis 

@@ -6,6 +6,7 @@ import { TextInput } from "@repo/ui/textInput"
 import { useState } from "react"
 import { createOnRampTransaction } from "../lib/actions/createOnRamp"
 import { toast } from "sonner"
+import { IndianRupee } from "lucide-react"
 
 const SUPPORTED_BANKS = [{
     name: "Choose Bank",
@@ -54,7 +55,7 @@ export const AddMoney = () => {
     return (
         <div className="text-[#OADBOD]">
             <Card title="Add Money" className="max-h-72">
-                <TextInput label="Amount" placeHolder="Amount" onChange={(e) => { setAmount(Number(e.target.value)) }} />
+                <TextInput  label="Amount" placeHolder="Amount" onChange={(e) => { setAmount(Number(e.target.value)) }} />
                 <div className="mt-2 p-1 text-[#OADBOD]">
                     Bank
                 </div>

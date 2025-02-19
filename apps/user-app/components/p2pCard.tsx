@@ -6,6 +6,7 @@ import { p2pTransfer } from "../lib/actions/p2pTeransfer"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { PhoneInput , Input } from "@repo/ui/input"
+import { IndianRupee } from "lucide-react"
 
 
 
@@ -28,7 +29,7 @@ export const P2pCard = () => {
         <Card title="P2P Transfer" className="h-80 w-full text-[#OADBOD] mt-6">
             <div className="flex flex-col gap-4">
             <PhoneInput value={data.phone} maxLength={10} onChange={handlePhoneChange} label="Phone Number" placeholder="000-000-0000" />
-            <Input onChange={(e) => setData({ ...data, amount:Number(e.target.value)})} label="Amount" placeholder="Enter your amount" />
+            <Input Icon={IndianRupee} onChange={(e) => setData({ ...data, amount:Number(e.target.value)})} label="Amount" placeholder="Enter your amount" />
             </div>
             <div className="flex justify-center items-center mt-4">
             <Button     onClick={async () => {

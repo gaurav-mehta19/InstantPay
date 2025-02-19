@@ -18,12 +18,10 @@ interface P2PTransactionProps {
 
 
 export const P2pTransaction = ({ transaction }: P2PTransactionProps) => {
-    const pathName = usePathname()
-    const minHeight = pathName==="/dashboard" ? "min-h-[320px]":"min-h-[525px]"
 
     if (!transaction.length) {
         return <Card title="P2P transaction">
-            <div className={`text-[#OADBOD] flex justify-center max-h-64 items-center ${minHeight}`}>
+            <div className={`text-[#OADBOD] flex justify-center items-center min-h-[550px] max-h-[550px]`}>
                 No Recent transaction
             </div>
         </Card>
@@ -45,7 +43,7 @@ export const P2pTransaction = ({ transaction }: P2PTransactionProps) => {
 
     return (
         <Card title="P2P Transaction">
-            <div className={minHeight}>
+            <div className="min-h-[550px] max-h-[550px]">
                 {transaction.map(t => (
                     <div key={t.id} className="flex justify-between gap-3 border-b border-neutral-200 mt-2">
                         <div className=" text-[#111827]">

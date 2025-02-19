@@ -10,11 +10,11 @@ interface SubHeadingProps {
 export const SubHeading = ({label,to,onclicktext}:SubHeadingProps) => {
     const router = useRouter();
     return (
-        <div className='font-sans flex gap-2 text-[#OADBOD] text-base mb-6'>
+        <div className='font-sans flex gap-1 text-secondary-dark text-md mb-6'>
             <div>
                 {label}
             </div>
-            <div className='hover:underline' onClick={()=>{
+            <div className='hover:underline text-primary' onClick={()=>{
                 router.push(to)
             }}>
                 {onclicktext}

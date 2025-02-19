@@ -13,7 +13,7 @@ interface OnrampTransactionProps {
 export const OnrampTransaction = ({ transaction }: OnrampTransactionProps) => {
     if (!transaction.length) {
         return <Card title="Bank transaction">
-            <div className="text-[#OADBOD] flex justify-center max-h-64 items-center" style={{ minHeight: '525px' }}>
+            <div className="text-[#OADBOD] flex justify-center items-center min-h-[550px] max-h-[550px]">
                 No Recent transaction
             </div>
         </Card>
@@ -34,7 +34,7 @@ export const OnrampTransaction = ({ transaction }: OnrampTransactionProps) => {
 
     return (
         <Card title="Bank transaction">
-            <div style={{minHeight:'525px'}}>
+            <div className="min-h-[550px] max-h-[550px]">
                 {transaction.map(t => <div key={t.id}>
                     <div className=" border-neutral-200 border-b flex justify-between mt-1.5 p-1.5">
                         <div className=" text-[#OADBOD]">

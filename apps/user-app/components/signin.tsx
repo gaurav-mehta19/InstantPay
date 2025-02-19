@@ -8,7 +8,8 @@ import { SigninInputTypes } from "@repo/validation/input";
 import { toast } from "sonner";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-
+import { KeyRound, Wallet2} from "lucide-react";
+import Link from "next/link";
 
 
 
@@ -63,19 +64,30 @@ export const SigninComponent = () => {
     
 
     return (
+        <div className="bg-gradient-to-b from-white via-[#F0F5FF] to-white">
         <div className="flex justify-center items-center h-screen">
             <div className="flex flex-col gap-4 justify-center items-center w-4/6 h-4/6">
-                <Heading label="Sign in your account" />
-                <SubHeading label="Don't have an account?" to="/users/signup" onclicktext="Signup" />
+            <Link href="/landing" className="flex items-center space-x-2 group mb-3">
+            <Wallet2 className="h-10 w-10 text-primary transition-transform group-hover:scale-110" />
+            <span className="text-4xl bg-clip-text text-transparent font-bold bg-gradient-to-r from-primary via-primary/80 to-secondary">InstantPay</span>
+          </Link>
+                <Heading label="Welcome back" />
+                <p className="text-md mb-3 -mt-1 text-secondary-dark">
+            Sign in to your account to continue
+          </p>
+                <div className="border bg-white px-6 py-8 rounded-lg flex flex-col gap-4 shadow-lg">
                 <PhoneInput value={data.phone} maxLength={10} onChange={handlePhoneChange} label="Phone Number" placeholder="000-000-0000" />
-                <Input value={data.password} onChange={(e) => setData({ ...data, password: e.target.value })} label="Password" type="password" placeholder="Enter your password" />
-                <div className="text-right ml-60 -mt-3">
-                <div className="text-[#OADBOD] hover:underline">Forget password?</div>
+                <Input Icon={KeyRound} value={data.password} onChange={(e) => setData({ ...data, password: e.target.value })} label="Password" type="password" placeholder="Enter your password" />
+                <div className="text-right ml-60 -mt-3.5 -mb-2.5">
+                <div className="text-primary  hover:underline ">Forget password?</div>
                 </div>
                 <PrimaryButton label="Sign in" onClick={handleSignin}></PrimaryButton>
+                </div>
+
+                <SubHeading label="Don't have an account ?" to="/users/signup" onclicktext="Signup" />
                
             </div>
-
+            </div>
         </div>
     )
 }
