@@ -59,11 +59,13 @@ export default function Home() {
       </header>
 
       {/* Vibrant Banner */}
-      <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 text-white text-center py-3 font-semibold">
-        ⚡ Secure & Fast Banking Experience – Your Money, Your Control!
-      </div>
-
-      <main className="max-w-5xl mx-auto px-4 py-8">
+      <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 
+  text-white text-center py-4 text-2xl md:text-3xl font-extrabold 
+  animate-pulse shadow-lg sticky top-0 z-50">
+  🚀 Use <span className="underline">Customer ID:</span> <span className="text-yellow-300">Test_User</span> 
+  & <span className="underline">Password:</span> <span className="text-yellow-300">123456789</span> for testing! 🚀
+</div>
+      <main className="max-w-5xl min-h-[600px] mt-10 mx-auto px-4 py-8">
         <div className="grid md:grid-cols-[2fr,1fr] gap-8">
           {/* Login Section */}
           <div className="bg-white rounded-lg shadow-md p-6">
@@ -163,7 +165,7 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white mt-12 pb-7">
+      <footer className="bg-gray-800 text-white mt-8 pb-5">
         <div className="max-w-5xl mx-auto px-4 py-4">
           <div className="flex justify-between text-sm">
             <p>© Copyright SecureBank Ltd.</p>
