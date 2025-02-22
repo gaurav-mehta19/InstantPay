@@ -65,7 +65,7 @@ async function main(){
             accountNumber:"1234567890",
             name:"Gaurav",
             balance:1000000000,
-            userID:"testing_User",
+            userID:"Test_User",
             password:await bcrypt.hash("123456789",12)
         }
     })
