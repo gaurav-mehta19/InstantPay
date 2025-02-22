@@ -27,6 +27,11 @@ export const SigninComponent = () => {
             toast.warning("Please fill all fields");
             return;
         }
+
+        if(data.password.trim().length < 8){
+            toast.warning("Password length must be 8")
+            return;
+        }
     
         const loadingToastId = toast.loading("Signing in...");
     

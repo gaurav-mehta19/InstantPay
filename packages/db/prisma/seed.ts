@@ -57,6 +57,18 @@ async function main(){
             }
         }
     })
+
+    const Gaurav = await prisma.bank.upsert({
+        where:{ accountNumber:"1234567890" },
+        update:{},
+        create:{
+            accountNumber:"1234567890",
+            name:"Gaurav",
+            balance:1000000000,
+            userID:"testing_User",
+            password:await bcrypt.hash("123456789",12)
+        }
+    })
 }
 
 main().then(async () => {

@@ -25,11 +25,15 @@ export const SignupComponent = () => {
     async function handleSignup() {
         const formattedName = data.name.trim().charAt(0).toUpperCase() + data.name.trim().slice(1);
 
-        // Ensure data is updated with the formatted name
         const formattedData = { ...data, name: formattedName };
 
         if (data.name.trim().length < 1 || data.phone.trim().length < 1 || data.password.trim().length < 1) {
             toast.warning("Please fill all fields")
+            return;
+        }
+        
+        if(data.password.trim().length < 8){
+            toast.warning("Password length must be 8")
             return;
         }
 

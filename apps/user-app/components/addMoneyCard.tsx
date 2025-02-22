@@ -3,20 +3,20 @@ import { Button } from "@repo/ui/button"
 import { Card } from "@repo/ui/card"
 import { Select } from "@repo/ui/select"
 import { TextInput } from "@repo/ui/textInput"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { createOnRampTransaction } from "../lib/actions/createOnRamp"
 import { toast } from "sonner"
-import { IndianRupee } from "lucide-react"
+
 
 const SUPPORTED_BANKS = [{
     name: "Choose Bank",
     redirectUrl: "http://localhost:3000/dashboard"
 }, {
     name: "HDFC Bank",
-    redirectUrl: "https://netbanking.hdfcbank.com"
+    redirectUrl: "http://localhost:3001"
 }, {
     name: "Axis Bank",
-    redirectUrl: "https://www.axisbank.com"
+    redirectUrl: "http://localhost:3001"
 }]
 
 
@@ -24,6 +24,11 @@ export const AddMoney = () => {
     const [redirectUrl, setRedirectUrl] = useState("")
     const [amount, setAmount] = useState(0)
     const [provider, setProvider] = useState("Choose Bank")
+
+    useEffect(() => {
+        setAmount(0); // Reset amount when component mounts
+        setProvider("Choose Bank");
+      }, [location.pathname]);
 
 
     function handleOnSelect(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -44,8 +49,17 @@ export const AddMoney = () => {
             return
         }
         try {
-            await createOnRampTransaction(amount * 100, provider)
-            window.location.href = redirectUrl
+           const { token } = await createOnRampTransaction(amount * 100, provider)
+           const safeRedirectUrl = redirectUrl ?? "http://localhost:3000/dashboard"
+
+           if (typeof token !== 'string') {
+               throw new Error("Invalid token received")
+           }
+
+           const redirectWithToken = `${safeRedirectUrl}?token=${encodeURIComponent(token)}`
+
+            window.location.href = redirectWithToken
+
         } catch (err) {
             console.error(err)
             toast.error("An error occurred while adding money")

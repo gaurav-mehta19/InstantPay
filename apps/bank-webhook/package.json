@@ -4,17 +4,18 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
-
+    "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "typescript": "^5.5.4"
   },
   "dependencies": {
     "@repo/db": "*",
+    "cors": "^2.8.5",
     "esbuild": "^0.23.0",
     "express": "^4.19.2"
   },
   "scripts": {
-    "build":"npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js",
-    "dev":"npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js && node dist/index.js"
+    "build": "npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js",
+    "dev": "npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js && node dist/index.js"
   }
 }
