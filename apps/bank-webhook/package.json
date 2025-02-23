@@ -15,7 +15,7 @@
     "express": "^4.19.2"
   },
   "scripts": {
-    "build": "npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js",
+    "build": "prisma migrate dev --schema=../../packages/db/prisma/schema.prisma && prisma generate --schema=../../packages/db/prisma/schema.prisma && npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js",
     "dev": "npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js && node dist/index.js"
   }
 }
