@@ -1,10 +1,11 @@
 import Home from "@/components/home";
+import { Suspense } from "react";
 
 
 export default function Landing() {
   return (
-    <div>
-      <Home />  
-    </div>
+<Suspense fallback={<div>Loading...</div>}>
+      <Home />
+    </Suspense>
   );
 }
