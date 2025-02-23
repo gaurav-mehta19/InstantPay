@@ -19,6 +19,8 @@ export default function Home() {
 
   async function handleAddMoney() {
 
+    const loadingToastId = toast.loading("Adding money to your account...");
+
     const user = await addMoney(token);
 
   
@@ -31,7 +33,7 @@ export default function Home() {
           user_identifier: user.transaction.userId,
           amount: user.transaction.amount
         })
-
+        toast.dismiss(loadingToastId);
         toast.success("Transaction successful");
 
         window.location.href = "https://instant-pay-user-app.vercel.app/dashboard";
