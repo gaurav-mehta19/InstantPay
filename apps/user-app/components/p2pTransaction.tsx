@@ -1,6 +1,6 @@
 "use client"
 import { Card } from "@repo/ui/card"
-import { usePathname } from "next/navigation";
+
 
 interface P2PTransactionProps {
     transaction: {
