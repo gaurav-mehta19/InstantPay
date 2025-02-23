@@ -10,13 +10,13 @@ import { toast } from "sonner"
 
 const SUPPORTED_BANKS = [{
     name: "Choose Bank",
-    redirectUrl: "http://localhost:3000/dashboard"
+    redirectUrl: "instant-pay-user-app.vercel.app/dashboard"
 }, {
     name: "HDFC Bank",
-    redirectUrl: "http://localhost:3001"
+    redirectUrl: "https://instant-pay-dummy-bank.vercel.app/"
 }, {
     name: "Axis Bank",
-    redirectUrl: "http://localhost:3001"
+    redirectUrl: "https://instant-pay-dummy-bank.vercel.app/"
 }]
 
 
