@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { AppBar } from "./appBar";
 
-export const AppBarClient = () => {
+export default function AppBarClient() {
     const session = useSession()
     const router = useRouter()
     return (

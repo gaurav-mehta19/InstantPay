@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from 'sonner'
 import Providers from "./providers";
-import { AppBarClient } from "../components/appBarClient";
+import  AppBarClient from "../components/appBarClient";
 
 
 
