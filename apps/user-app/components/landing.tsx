@@ -57,7 +57,7 @@ export const LandingPage = () => {
                                 Get Started <ArrowRight className="ml-2 h-5 w-5" />
                             </Link>
                             <button onClick={handleDemo} className="w-full sm:w-auto px-6 py-3 rounded-lg border border-primary text-primary hover:bg-primary/10 transition-all flex items-center justify-center group">
-                                Watch Demo <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                                Try Demo <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                             </button>
                         </div>
                     </div>
