@@ -17,6 +17,7 @@ export const LandingPage = () => {
             const res = await signIn('credentials', {
                 phone: '2222222222',
                 password: '123456789',
+                redirect: false
             })
     
             toast.dismiss(loadingToastId);
