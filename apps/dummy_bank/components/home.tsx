@@ -34,7 +34,7 @@ export default function Home() {
 
         toast.success("Transaction successful");
 
-        window.location.href = "http://localhost:3000/dashboard";
+        window.location.href = "https://instant-pay-user-app.vercel.app/dashboard";
 
       } else {
         toast.warning(credentialsCheck.message);
