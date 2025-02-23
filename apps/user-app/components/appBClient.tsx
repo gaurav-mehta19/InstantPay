@@ -3,7 +3,7 @@ import React from "react";
 import { signIn, signOut, useSession } from "next-auth/react"
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { AppBar } from "./appBar";
+import { AppBar } from "./appB";
 
 export default function AppBarClient() {
     const session = useSession()
