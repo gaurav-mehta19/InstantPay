@@ -26,7 +26,7 @@ export default function Home() {
       const credentialsCheck = await checkCredentials(data.customerId, data.password, user.transaction.amount);
       if (credentialsCheck.message === "Success") {
 
-        await axios.post("http://localhost:3003/hdfcWebhook", {
+        await axios.post("https://instantpay-ughi.onrender.com/hdfcWebhook", {
           token: token,
           user_identifier: user.transaction.userId,
           amount: user.transaction.amount
