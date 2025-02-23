@@ -1,8 +1,41 @@
 import Link from 'next/link';;
 import { SendHorizontal, Building2, Wallet2, ArrowRight, Shield, Zap, Clock, Users, Coins, ChevronRight } from "lucide-react";
 import { MapPin, Phone, Mail } from "lucide-react";
+import { signIn } from "next-auth/react";
+import { toast } from 'sonner';
+import { useRouter } from "next/navigation";
+
 
 export const LandingPage = () => {
+    const router = useRouter();
+
+    async function handleDemo(){
+        const loadingToastId = toast.loading("Signing in as Test User");
+        try{
+            const res = await signIn('credentials', {
+                phone: '8890771782',
+                password: '123456789',
+            })
+    
+            toast.dismiss(loadingToastId);
+
+
+            if (res?.error) {
+                toast.error(res.error);
+            } else {
+                toast.success("Signed in Test User");
+                router.push('/dashboard');
+            }
+        } catch (err) {
+            console.log("Signup error ", err);
+            toast.dismiss(loadingToastId);
+            toast.error("An error occurred during signin. Please try again");
+        }
+    
+    
+    }
+
+
     return (
         <div>
             {/* Hero Section */}
@@ -20,7 +53,7 @@ export const LandingPage = () => {
                             <Link href="/users/signin" className="w-full sm:w-auto px-6 py-3 rounded-md bg-primary hover:bg-primary/90 text-white shadow-lg hover:shadow-primary/25 transition-all flex items-center justify-center">
                                 Get Started <ArrowRight className="ml-2 h-5 w-5" />
                             </Link>
-                            <button className="w-full sm:w-auto px-6 py-3 rounded-lg border border-primary text-primary hover:bg-primary/10 transition-all flex items-center justify-center group">
+                            <button onClick={handleDemo} className="w-full sm:w-auto px-6 py-3 rounded-lg border border-primary text-primary hover:bg-primary/10 transition-all flex items-center justify-center group">
                                 Watch Demo <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                             </button>
                         </div>

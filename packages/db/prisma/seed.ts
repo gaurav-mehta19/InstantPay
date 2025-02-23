@@ -58,6 +58,34 @@ async function main(){
         }
     })
 
+    const Test = await prisma.user.upsert({
+        where:{ phone:"2222222222" },
+        update:{},
+        create:{
+            name:"Test User",
+            phone:"8890771782",
+            password:await bcrypt.hash("123456789",12),
+
+            balance:{
+                create:{
+                    amount:1000000,
+                    locked:0
+                }
+            },
+
+            onRampTransaction:{
+                create:{
+                    createdAt:new Date(),
+                    status:"Success",
+                    amount:500000,
+                    token:"adscjsmwbdskucaygdv",
+                    provider:"HDFC Bank"
+                }
+            },   
+        }
+    })
+
+
     const Gaurav = await prisma.bank.upsert({
         where:{ accountNumber:"1234567890" },
         update:{},
