@@ -1,3 +1,5 @@
+"use client";
+
 import Link from 'next/link';;
 import { SendHorizontal, Building2, Wallet2, ArrowRight, Shield, Zap, Clock, Users, Coins, ChevronRight } from "lucide-react";
 import { MapPin, Phone, Mail } from "lucide-react";
