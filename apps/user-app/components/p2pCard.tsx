@@ -34,6 +34,18 @@ export const P2pCard = () => {
             <div className="flex justify-center items-center mt-4">
             <Button     onClick={async () => {
         const loadingToastId = toast.loading("Transferring...");
+        if (data.phone.trim().length < 1) {
+            toast.dismiss(loadingToastId);
+            toast.warning("Please fill Phone Number");
+            return;
+        }
+
+        if(data.amount < 1){
+            toast.dismiss(loadingToastId);
+            toast.warning("Amount must be greater than 0")
+            return;
+        }
+
 
         try {
             const response = await p2pTransfer(data.phone, data.amount * 100);
