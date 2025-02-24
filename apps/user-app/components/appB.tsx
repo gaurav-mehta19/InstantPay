@@ -30,15 +30,21 @@ export const AppBar = ({ onsignIn, onsignOut, user }: AppBarProps) => {
                     <SideBarIconVisibility />
                 </button>
                 <div className='ml-2'>
-                <WalletMinimal  className='text-[#1a56db] ml-5 w-8 h-7 mt-1 mr-0.5'/>
+                    <WalletMinimal className='text-[#1a56db] ml-5 w-8 h-7 mt-1 mr-0.5' />
                 </div>
-                <div onClick={() => {window.location.href="/"}} className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/80 to-secondary mt-0.5">
+                <div onClick={() => { window.location.href = "/" }} className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary via-primary/80 to-secondary mt-0.5">
                     InstantPay
                 </div>
             </div>
             <div className='flex gap-3 items-center justify-center m-2'>
-                <DecideSideICon/>
-                <Button label='Sign up' onClick={() => { router.push('/users/signup') }} className='bg-white text-[#1a56db] text-center w-24 m-1 h-10 rounded-md hover:bg-blue-100 transition-colors duration-100' />
+                <DecideSideICon />
+                {!user && (
+                    <Button
+                        label="Signup"
+                        onClick={() => { router.push('/users/signup') }}
+                        className='bg-white text-[#1a56db] text-center w-24 m-1 h-10 rounded-md hover:bg-blue-100 transition-colors duration-100'
+                    />
+                )}
                 <Button className='border border-[#1a56db]  text-white text-center w-24 m-1 h-10 bg-[#1a56db] rounded-md hover:bg-[#1a56db]/90 transition-colors duration-100 shadow-2xl mr-20' onClick={user ? onsignOut : onsignIn} label={user ? "Sign out" : "Sign In"} />
             </div>
         </div>
@@ -52,7 +58,7 @@ function ClosedSideBarIcon() {
 
     return <div onClick={() => {
         setIsSideBarOpen(true)
-    }}><Menu className='h-8 w-8 text-[#1a56db] '/>
+    }}><Menu className='h-8 w-8 text-[#1a56db] ' />
     </div>
 }
 
@@ -76,7 +82,7 @@ function DecideSideBarIcon() {
 function SideBarIconVisibility() {
     const pathName = usePathname()
 
-    const hiddenPaths = ["/", "/users/signup", "/users/signin","/landing"];
+    const hiddenPaths = ["/", "/users/signup", "/users/signin", "/landing"];
     if (hiddenPaths.includes(pathName)) {
         return null;
     }
@@ -85,7 +91,7 @@ function SideBarIconVisibility() {
     </div>
 }
 
-function DecideSideICon(){
+function DecideSideICon() {
     const pathName = usePathname()
 
     const hiddenPaths = ["/landing"];
@@ -93,8 +99,8 @@ function DecideSideICon(){
     if (hiddenPaths.includes(pathName)) {
         return (
             <div className='flex gap-6 items-center justify-center m-1'>
-            <Link href="#features" className="text-gray-500 hover:text-primary transition-colors">Features</Link>
-            <Link href="#benefits" className="text-gray-500 hover:text-primary transition-colors">Benefits</Link>
+                <Link href="#features" className="text-gray-500 hover:text-primary transition-colors">Features</Link>
+                <Link href="#benefits" className="text-gray-500 hover:text-primary transition-colors">Benefits</Link>
             </div>
         )
     }
