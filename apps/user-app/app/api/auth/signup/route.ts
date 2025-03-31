@@ -38,7 +38,6 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({
             id: newUser.id,
             name: newUser.name,
-            phone: newUser.phone
         })
     }
     catch (err) {

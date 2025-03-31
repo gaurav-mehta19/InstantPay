@@ -15,38 +15,35 @@ export const NEXT_AUTH = {
                 password: { label: "Password", type: "password" },
             },
             async authorize(credentials: any) {
-
                 if (!credentials.phone || !credentials.password) {
-                    throw new Error('Invalid input');
+                    throw new Error('Invalid credentials');
                 }
                 const { phone, password } = credentials;
-
+            
                 const { success } = signinInput.safeParse({ phone, password });
-
+            
                 if (!success) {
-                    throw new Error('Invalid input');
+                    throw new Error('Invalid credentials');
                 }
-
+            
                 const userExist = await prisma.user.findFirst({
-                    where: {
-                        phone: phone
-                    }
+                    where: { phone }
                 });
-
+            
                 if (!userExist) {
-                    throw new Error('User not found');
+                    throw new Error('Invalid credentials');  // 🔴 Avoid telling user exists or not
                 }
-
+            
                 if (!userExist.password) {
-                    throw new Error('Invalid password');
+                    throw new Error('Invalid credentials');
                 }
-
+            
                 const passwordMatch = await bcrypt.compare(password, userExist.password);
-
+            
                 if (!passwordMatch) {
-                    throw new Error('Invalid password');
+                    throw new Error('Invalid credentials');
                 }
-
+            
                 return {
                     id: userExist.id,
                     phone: userExist.phone,

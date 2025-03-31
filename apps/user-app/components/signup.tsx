@@ -39,7 +39,7 @@ export const SignupComponent = () => {
 
         const loadingToastId = toast.loading("Signing up...")
         try {
-            const res = await axios.post("https://instant-pay-user-app.vercel.app//api/auth/signup", formattedData)
+            const res = await axios.post("https://instant-pay-user-app.vercel.app/api/auth/signup", formattedData)
 
             if (res.data.error) {
                 toast.error(res.data.error)
