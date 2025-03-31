@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
-   "build": "prisma migrate dev --schema=../../packages/db/prisma/schema.prisma && prisma generate --schema=../../packages/db/prisma/schema.prisma && ts-node ../../packages/db/prisma/seed.ts && next build",
+    "build": "prisma migrate dev --schema=../../packages/db/prisma/schema.prisma && prisma generate --schema=../../packages/db/prisma/schema.prisma && ts-node ../../packages/db/prisma/seed.ts && next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -21,12 +21,15 @@
     "lucide-react": "^0.475.0",
     "next": "14.2",
     "next-auth": "^4.24.7",
+    "prettier": "^3.5.3",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-router-dom": "^7.0.2",
     "recharts": "^2.15.1",
     "recoil": "^0.7.7",
-    "sonner": "^1.5.0"
+    "sonner": "^1.5.0",
+    "turbo": "^2.4.4",
+    "typescript": "^5.8.2"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
