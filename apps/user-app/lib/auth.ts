@@ -2,7 +2,6 @@
 import prisma from "@repo/db/client";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
-import GoogleProvider from "next-auth/providers/google";
 import { signinInput } from "@repo/validation/input";
 
 
@@ -55,37 +54,6 @@ export const NEXT_AUTH = {
                 }
             }
         }),
-
-        GoogleProvider({
-            name: 'google',
-            clientId: process.env.GOOGLE_CLIENT_ID || "",
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-
-            async profile(profile: any) {
-                console.log(profile);
-                
-                const user = await prisma.user.findUnique({
-                    where: {
-                        phone: profile.phone
-                    }
-                })
-
-                if (!user) {
-                    await prisma.user.create({
-                        data: {
-                            phone: profile.phone,
-                            name: profile.name,
-                        }
-                    })
-                }
-
-                return {
-                    id: profile.sub,
-                    phone: profile.phone,
-                    name: profile.name
-                }
-            }
-        })
     ],
     secret: process.env.JWT_SECRET,
     callbacks: {
