@@ -7,11 +7,11 @@ export default function Layout({
 }>) {
 
     return (
-        <div className="flex">
-            <div>
-                <SideBarClient />
+        <div className="flex min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50">
+            <SideBarClient />
+            <div className="flex-1 overflow-auto">
+                {children}
             </div>
-            {children}
         </div>
     )
 }
