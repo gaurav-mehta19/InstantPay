@@ -15,8 +15,8 @@ export const LandingPage = () => {
         const loadingToastId = toast.loading("Signing in as Test User");
         try{
             const res = await signIn('credentials', {
-                phone: '2222222222',
-                password: '123456789',
+                phone: process.env.PHONE ,
+                password: process.env.PASSWORD,
                 redirect: false
             })
     
