@@ -95,7 +95,10 @@ export async function getBalanceHistory() {
     });
 
     // Ensure the last balance matches the actual current balance
-    if (balanceHistory.length > 0 && Math.abs(balanceHistory[balanceHistory.length - 1].amount - actualBalance) > 0.01) {
+    const lastCalculatedEntry = balanceHistory[balanceHistory.length - 1];
+
+    // By checking for lastCalculatedEntry first, we assure TypeScript it's not undefined.
+    if (lastCalculatedEntry && Math.abs(lastCalculatedEntry.amount - actualBalance) > 0.01) {
         // Add a correction entry if there's a discrepancy
         balanceHistory.push({
             date: new Date(),
