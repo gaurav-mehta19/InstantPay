@@ -1,6 +1,8 @@
 import { Profile } from "../../../components/profile"
 import { getProfile } from "../../../lib/utils/profile"
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export default async function ProfilePage(){
     const profile = await getProfile()

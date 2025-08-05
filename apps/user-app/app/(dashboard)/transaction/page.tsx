@@ -5,6 +5,9 @@ import { P2pTransaction } from '../../../components/p2pTransaction';
 import { OnrampTransaction } from '../../../components/onRampTransaction';
 import { getP2Ptransaction, getTransaction } from '../../../lib/utils/transaction';
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 // Main Transaction Page Component
 export default async function Transaction() {
     const p2ptransaction = await getP2Ptransaction(); // Fetch and process transactions

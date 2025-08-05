@@ -37,9 +37,20 @@ export default function AppBarClient() {
         <AppBar 
             onsignIn={signIn} 
             onsignOut={async () => {
-                await signOut({redirect: false})
-                router.push("/users/signin")
-                toast.success("Logged out successfully")
+                try {
+                    await signOut({redirect: false})
+                    // Clear any cached data and force full page reload
+                    if (typeof window !== 'undefined') {
+                        window.location.href = "/users/signin"
+                    }
+                    toast.success("Logged out successfully")
+                } catch (error) {
+                    toast.error("Error during logout")
+                    // Fallback: still redirect to clear any cached state
+                    if (typeof window !== 'undefined') {
+                        window.location.href = "/users/signin"
+                    }
+                }
             }} 
             user={session.data?.user}
             onDemo={handleDemo}

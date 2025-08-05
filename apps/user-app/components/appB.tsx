@@ -64,7 +64,6 @@ export const AppBar = ({ onsignIn, onsignOut, user, variant = 'dashboard', onDem
                                         </span>
                                     </div>
                                     <div className="hidden md:block">
-                                        <p className="text-xs text-neutral-600">Welcome back!</p>
                                         <p className="text-sm font-medium text-neutral-800">{user.name || 'User'}</p>
                                     </div>
                                 </div>
