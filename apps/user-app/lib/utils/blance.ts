@@ -62,11 +62,40 @@ export async function getBalanceHistory() {
             amount: true,
             createdAt: true,
             fromUserId: true,
-            toUserId: true
+            toUserId: true,
+            direction: true
         },
         orderBy: {
             createdAt: 'asc'
         }
+    });
+
+    // Process P2P transactions with smart deduplication
+    // Group P2P transactions by timestamp and amount to identify duplicates from old system
+    const p2pTransactionMap = new Map<string, any>();
+    
+    p2pTransactions.forEach(t => {
+        const timestamp = t.createdAt.getTime();
+        const amount = Math.abs(t.amount); // Use absolute amount for grouping
+        const transferKey = `${timestamp}_${amount}`;
+        
+        if (!p2pTransactionMap.has(transferKey)) {
+            // First transaction for this transfer - determine direction based on user role
+            const userIsSender = t.fromUserId === session.user.id;
+            p2pTransactionMap.set(transferKey, {
+                id: `p2p_${transferKey}`, // Use timestamp+amount as unique key
+                date: t.createdAt,
+                amount: userIsSender ? -(t.amount / 100) : (t.amount / 100),
+                type: 'p2p' as const,
+                description: userIsSender 
+                    ? `Sent ₹${(t.amount / 100).toFixed(2)}` 
+                    : `Received ₹${(t.amount / 100).toFixed(2)}`,
+                rawAmount: t.amount,
+                direction: userIsSender ? 'out' : 'in',
+                dbId: t.id
+            });
+        }
+        // Skip duplicate transactions (second record of the same transfer)
     });
 
     const allTransactions = [
@@ -79,55 +108,25 @@ export async function getBalanceHistory() {
             rawAmount: t.amount,
             dbId: t.id
         })),
-        ...p2pTransactions.map(t => ({
-            id: `p2p_${t.id}`, // Use database ID to ensure uniqueness
-            date: t.createdAt,
-            // If user sent money, it's negative; if received, positive
-            amount: t.fromUserId === session.user.id ? -(t.amount / 100) : (t.amount / 100),
-            type: 'p2p' as const,
-            description: t.fromUserId === session.user.id 
-                ? `Sent ₹${(t.amount / 100).toFixed(2)}` 
-                : `Received ₹${(t.amount / 100).toFixed(2)}`,
-            rawAmount: t.amount,
-            direction: t.fromUserId === session.user.id ? 'out' : 'in',
-            dbId: t.id
-        }))
+        ...Array.from(p2pTransactionMap.values())
     ];
 
-    // Remove duplicates by ID and sort chronologically
-    const uniqueTransactions = Array.from(
-        new Map(allTransactions.map(t => [t.id, t])).values()
-    ).sort((a, b) => a.date.getTime() - b.date.getTime());
+    // Sort chronologically
+    const uniqueTransactions = allTransactions.sort((a, b) => a.date.getTime() - b.date.getTime());
 
     if (uniqueTransactions.length === 0) {
         return [{ date: new Date(), amount: actualBalance }];
     }
 
-    // Debug: Log all transactions to understand the issue
-    console.log('🔍 Debug Transactions for user:', session.user.id);
-    console.log('📊 OnRamp transactions:', onRampTransactions.length);
-    console.log('💸 P2P transactions:', p2pTransactions.length);
-    console.log('🔄 Unique transactions:', uniqueTransactions.length);
-    
-    uniqueTransactions.forEach((tx, i) => {
-        console.log(`${i + 1}. ${tx.type.toUpperCase()}: ${tx.amount > 0 ? '+' : ''}${tx.amount} - ${tx.description}`);
-        console.log(`   📅 Date: ${tx.date.toISOString()}`);
-        console.log(`   🆔 Unique ID: ${tx.id}`);
-        console.log(`   💾 DB ID: ${tx.dbId || tx.id}`);
-        if (tx.type === 'p2p') {
-            console.log(`   🔄 Direction: ${tx.direction} | Raw: ₹${tx.rawAmount / 100}`);
-        }
-        console.log('---');
-    });
+
 
     let runningBalance = 0;
     const balanceHistory: { date: Date; amount: number }[] = [];
 
-    uniqueTransactions.forEach((transaction, index) => {
+    uniqueTransactions.forEach((transaction) => {
         runningBalance += transaction.amount;
         const newBalance = Math.round(runningBalance * 100) / 100;
         
-        console.log(`💰 Balance after transaction ${index + 1}: ${newBalance}`);
         
         balanceHistory.push({
             date: transaction.date,
