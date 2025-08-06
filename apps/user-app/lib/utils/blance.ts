@@ -25,6 +25,13 @@ export async function getBalanceHistory() {
         return [];
     }
 
+    // Get current actual balance from the balance table
+    const currentBalance = await prisma.balance.findUnique({
+        where: { userId: session.user.id },
+    });
+
+    const actualBalance = currentBalance ? currentBalance.amount / 100 : 0;
+
     const onRampTransactions = await prisma.onRampTransaction.findMany({
         where: {
             userId: session.user.id,
@@ -35,7 +42,7 @@ export async function getBalanceHistory() {
             createdAt: true
         },
         orderBy: {
-            createdAt: 'desc'
+            createdAt: 'asc' // Change to ascending for proper chronological order
         }
     });
 
@@ -43,6 +50,7 @@ export async function getBalanceHistory() {
         where: {
             OR: [
                 { fromUserId: session.user.id },
+                { toUserId: session.user.id }
             ],
             status: "Success"
         },
@@ -53,22 +61,27 @@ export async function getBalanceHistory() {
             toUserId: true
         },
         orderBy: {
-            createdAt: 'desc'
+            createdAt: 'asc' // Change to ascending for proper chronological order
         }
     });
 
     const allTransactions = [
         ...onRampTransactions.map(t => ({
             date: t.createdAt,
-            amount: t.amount / 100,
+            amount: t.amount / 100, // OnRamp adds money
             type: 'onramp'
         })),
         ...p2pTransactions.map(t => ({
             date: t.createdAt,
-            amount: t.amount / 100,
+            // If user sent money, it's negative; if received, positive
+            amount: t.fromUserId === session.user.id ? -(t.amount / 100) : (t.amount / 100),
             type: 'p2p'
         }))
     ].sort((a, b) => a.date.getTime() - b.date.getTime());
+
+    if (allTransactions.length === 0) {
+        return [{ date: new Date(), amount: actualBalance }];
+    }
 
     let runningBalance = 0;
     const balanceHistory: { date: Date; amount: number }[] = [];
@@ -81,5 +94,17 @@ export async function getBalanceHistory() {
         });
     });
 
-    return balanceHistory.length > 0 ? balanceHistory : [{ date: new Date(), amount: 0 }];
+    // Ensure the last balance matches the actual current balance
+    const lastCalculatedEntry = balanceHistory[balanceHistory.length - 1];
+
+    // By checking for lastCalculatedEntry first, we assure TypeScript it's not undefined.
+    if (lastCalculatedEntry && Math.abs(lastCalculatedEntry.amount - actualBalance) > 0.01) {
+        // Add a correction entry if there's a discrepancy
+        balanceHistory.push({
+            date: new Date(),
+            amount: actualBalance
+        });
+    }
+
+    return balanceHistory;
 }

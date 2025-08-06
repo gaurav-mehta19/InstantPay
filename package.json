@@ -8,6 +8,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
+    "@types/minimatch": "^5.1.2",
     "prettier": "^3.2.5",
     "turbo": "^2.0.11",
     "typescript": "^5.4.5"

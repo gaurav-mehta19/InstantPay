@@ -63,11 +63,17 @@ export const NEXT_AUTH = {
             return token;
         },
         async session({ token, session }:any) {
-            session.user.id = token.sub;
-            session.user.phone = token.phone;
-            session.user.name = token.name;
+            if (token?.sub) {
+                session.user.id = token.sub;
+                session.user.phone = token.phone;
+                session.user.name = token.name;
+            }
             return session;
         }
+    },
+    session: {
+        strategy: 'jwt' as const,
+        maxAge: 24 * 60 * 60, // 24 hours
     },
     pages: {
         signIn: '/users/signin',

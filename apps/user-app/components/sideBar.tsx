@@ -23,12 +23,12 @@ export const SideBar = ({ href, title, icon }: SideBarProps) => {
       onKeyDown={(e) => {
         if (e.key === "Enter") handleNavigation();
       }}
-      className="sidebar-button flex items-center gap-3 p-2 mx-6 mt-6 text-gray-600 h-10 rounded-xl hover:bg-gray-100 cursor-pointer"
+      className="group flex items-center gap-4 p-4 mx-4 my-2 text-neutral-600 rounded-2xl hover:bg-gradient-to-r hover:from-primary-50 hover:to-secondary-50 hover:text-primary cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-md"
     >
-      <div className="flex items-center gap-2 w-full">
+      <div className="p-2 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-xl group-hover:from-primary group-hover:to-secondary group-hover:text-white transition-all duration-300">
         <div className="text-xl">{icon}</div>
-        <div className="text-lg">{title}</div>
       </div>
+      <div className="text-lg font-medium group-hover:font-semibold transition-all duration-300">{title}</div>
     </div>
   );
 };
