@@ -1,8 +1,4 @@
 "use client"
-import { Button } from "@repo/ui/button"
-import { Card } from "@repo/ui/card"
-import { Select } from "@repo/ui/select"
-import { TextInput } from "@repo/ui/textInput"
 import { useEffect, useState } from "react"
 import { createOnRampTransaction } from "../lib/actions/createOnRamp"
 import { toast } from "sonner"

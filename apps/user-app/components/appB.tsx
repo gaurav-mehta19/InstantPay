@@ -3,7 +3,6 @@ import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { sideBarAtom } from '@repo/store/sideBar';
-import { Button } from '@repo/ui/button';
 import { Menu, Wallet2 } from 'lucide-react';
 
 

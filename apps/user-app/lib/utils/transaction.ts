@@ -4,9 +4,17 @@ import { NEXT_AUTH } from "../auth";
 
 export async function getP2Ptransaction() {
     const session = await getServerSession(NEXT_AUTH);
+    
+    if (!session?.user?.id) {
+        return [];
+    }
+
     const p2pTransaction = await prisma.p2PTransaction.findMany({
         where: {
-            fromUserId: session?.user?.id,
+            OR: [
+                { fromUserId: session.user.id },
+                { toUserId: session.user.id }
+            ]
         },
         orderBy: {
             createdAt: "desc",
@@ -25,21 +33,32 @@ export async function getP2Ptransaction() {
                     phone: true,
                 },
             },
+            fromUser: {
+                select: {
+                    name: true,
+                    phone: true,
+                },
+            },
             direction: true,
         },
     });
 
-    return p2pTransaction.map((t) => ({
-        time: t.createdAt,
-        amount: t.amount,
-        status: t.status,
-        id: t.id,
-        toUserId: t.toUserId,
-        fromUserId: t.fromUserId,
-        direction: t.direction,
-        toUserName: t.toUser?.name,
-        toUserPhone: t.toUser?.phone,
-    }));
+    return p2pTransaction.map((t) => {
+        const isCurrentUserSender = t.fromUserId === session.user.id;
+        const otherUser = isCurrentUserSender ? t.toUser : t.fromUser;
+        
+        return {
+            time: t.createdAt,
+            amount: t.amount,
+            status: t.status,
+            id: t.id,
+            toUserId: t.toUserId,
+            fromUserId: t.fromUserId,
+            direction: isCurrentUserSender ? "send" : "receive",
+            toUserName: otherUser?.name || "Unknown",
+            toUserPhone: otherUser?.phone || "Unknown",
+        };
+    });
 }
 
 export async function getTransaction() {

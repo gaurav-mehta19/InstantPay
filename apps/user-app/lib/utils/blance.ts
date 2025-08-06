@@ -103,31 +103,14 @@ export async function getBalanceHistory() {
         return [{ date: new Date(), amount: actualBalance }];
     }
 
-    // Debug: Log all transactions to understand the issue
-    console.log('🔍 Debug Transactions for user:', session.user.id);
-    console.log('📊 OnRamp transactions:', onRampTransactions.length);
-    console.log('💸 P2P transactions:', p2pTransactions.length);
-    console.log('🔄 Unique transactions:', uniqueTransactions.length);
-    
-    uniqueTransactions.forEach((tx, i) => {
-        console.log(`${i + 1}. ${tx.type.toUpperCase()}: ${tx.amount > 0 ? '+' : ''}${tx.amount} - ${tx.description}`);
-        console.log(`   📅 Date: ${tx.date.toISOString()}`);
-        console.log(`   🆔 Unique ID: ${tx.id}`);
-        console.log(`   💾 DB ID: ${tx.dbId || tx.id}`);
-        if (tx.type === 'p2p') {
-            console.log(`   🔄 Direction: ${tx.direction} | Raw: ₹${tx.rawAmount / 100}`);
-        }
-        console.log('---');
-    });
 
     let runningBalance = 0;
     const balanceHistory: { date: Date; amount: number }[] = [];
 
-    uniqueTransactions.forEach((transaction, index) => {
+    uniqueTransactions.forEach((transaction) => {
         runningBalance += transaction.amount;
         const newBalance = Math.round(runningBalance * 100) / 100;
         
-        console.log(`💰 Balance after transaction ${index + 1}: ${newBalance}`);
         
         balanceHistory.push({
             date: transaction.date,

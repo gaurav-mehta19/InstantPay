@@ -56,25 +56,14 @@ export async function p2pTransfer(to: string, amount: number) {
             },
         });
 
-        // Create a transaction for the sender
+        // Create a single transaction record for the transfer
         await tx.p2PTransaction.create({
             data: {
-                amount: -amount, // Negative for the sender
+                amount: amount, // Store absolute amount
                 status: "Success",
                 fromUserId: from,
                 toUserId: toUser.id,
-                direction:"send"
-            },
-        });
-
-        // Create a transaction for the receiver
-        await tx.p2PTransaction.create({
-            data: {
-                amount: amount, // Positive for the receiver
-                status: "Success",
-                fromUserId: toUser.id, // Sender becomes the receiver
-                toUserId: from, // Receiver becomes the sender
-                direction:"receive"
+                direction: "transfer" // Use a single direction to avoid confusion
             },
         });
 
