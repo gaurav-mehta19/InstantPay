@@ -11,13 +11,19 @@ interface BalanceChartProps {
 }
 
 export function BalanceChart({ data }: BalanceChartProps) {
-
-    const last9Data = data.slice(-9);
+    // Format data for chart and ensure proper chronological order
+    const chartData = data
+        .map((item, index) => ({
+            ...item,
+            date: item.date.toISOString(), // Convert to string for chart
+            amount: Number(item.amount.toFixed(2)) // Ensure clean numbers
+        }))
+        .slice(-10); // Show last 10 transactions for better visibility
 
   return (
     <div className="h-[320px]">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart data={last9Data}>
+        <LineChart data={chartData}>
           <XAxis 
             dataKey="date" 
             tickFormatter={(value) => formatDate(new Date(value))}
@@ -67,6 +73,7 @@ export function BalanceChart({ data }: BalanceChartProps) {
             dataKey="amount"
             strokeWidth={3}
             stroke="url(#colorGradient)"
+            connectNulls={false}
             dot={{
               fill: 'url(#colorGradient)',
               strokeWidth: 2,
