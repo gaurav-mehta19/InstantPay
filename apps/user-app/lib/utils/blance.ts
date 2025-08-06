@@ -38,14 +38,17 @@ export async function getBalanceHistory() {
             status: "Success"
         },
         select: {
+            id: true,
             amount: true,
-            createdAt: true
+            createdAt: true,
+            userId: true
         },
         orderBy: {
-            createdAt: 'asc' // Change to ascending for proper chronological order
+            createdAt: 'asc'
         }
     });
 
+    // Get P2P transactions where user is involved (either sender or receiver)
     const p2pTransactions = await prisma.p2PTransaction.findMany({
         where: {
             OR: [
@@ -55,33 +58,38 @@ export async function getBalanceHistory() {
             status: "Success"
         },
         select: {
+            id: true,  // Add ID to prevent duplicates
             amount: true,
             createdAt: true,
             fromUserId: true,
             toUserId: true
         },
         orderBy: {
-            createdAt: 'asc' // Change to ascending for proper chronological order
+            createdAt: 'asc'
         }
     });
 
     const allTransactions = [
         ...onRampTransactions.map(t => ({
-            id: `onramp_${t.createdAt.getTime()}`,
+            id: `onramp_${t.id}`, // Use database ID for uniqueness
             date: t.createdAt,
             amount: t.amount / 100, // OnRamp adds money
             type: 'onramp' as const,
-            description: `Added ₹${(t.amount / 100).toFixed(2)}`
+            description: `Added ₹${(t.amount / 100).toFixed(2)}`,
+            rawAmount: t.amount,
+            dbId: t.id
         })),
         ...p2pTransactions.map(t => ({
-            id: `p2p_${t.createdAt.getTime()}_${t.fromUserId}_${t.toUserId}`,
+            id: `p2p_${t.id}`, // Use database ID to ensure uniqueness
             date: t.createdAt,
             // If user sent money, it's negative; if received, positive
             amount: t.fromUserId === session.user.id ? -(t.amount / 100) : (t.amount / 100),
             type: 'p2p' as const,
             description: t.fromUserId === session.user.id 
                 ? `Sent ₹${(t.amount / 100).toFixed(2)}` 
-                : `Received ₹${(t.amount / 100).toFixed(2)}`
+                : `Received ₹${(t.amount / 100).toFixed(2)}`,
+            rawAmount: t.amount,
+            direction: t.fromUserId === session.user.id ? 'out' : 'in'
         }))
     ];
 
@@ -94,14 +102,35 @@ export async function getBalanceHistory() {
         return [{ date: new Date(), amount: actualBalance }];
     }
 
+    // Debug: Log all transactions to understand the issue
+    console.log('🔍 Debug Transactions for user:', session.user.id);
+    console.log('📊 OnRamp transactions:', onRampTransactions.length);
+    console.log('💸 P2P transactions:', p2pTransactions.length);
+    console.log('🔄 Unique transactions:', uniqueTransactions.length);
+    
+    uniqueTransactions.forEach((tx, i) => {
+        console.log(`${i + 1}. ${tx.type.toUpperCase()}: ${tx.amount > 0 ? '+' : ''}${tx.amount} - ${tx.description}`);
+        console.log(`   📅 Date: ${tx.date.toISOString()}`);
+        console.log(`   🆔 Unique ID: ${tx.id}`);
+        console.log(`   💾 DB ID: ${tx.dbId || tx.id}`);
+        if (tx.type === 'p2p') {
+            console.log(`   🔄 Direction: ${tx.direction} | Raw: ₹${tx.rawAmount / 100}`);
+        }
+        console.log('---');
+    });
+
     let runningBalance = 0;
     const balanceHistory: { date: Date; amount: number }[] = [];
 
     uniqueTransactions.forEach((transaction, index) => {
         runningBalance += transaction.amount;
+        const newBalance = Math.round(runningBalance * 100) / 100;
+        
+        console.log(`💰 Balance after transaction ${index + 1}: ${newBalance}`);
+        
         balanceHistory.push({
             date: transaction.date,
-            amount: Math.round(runningBalance * 100) / 100 // Round to 2 decimal places
+            amount: newBalance
         });
     });
 
