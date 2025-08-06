@@ -89,7 +89,8 @@ export async function getBalanceHistory() {
                 ? `Sent ₹${(t.amount / 100).toFixed(2)}` 
                 : `Received ₹${(t.amount / 100).toFixed(2)}`,
             rawAmount: t.amount,
-            direction: t.fromUserId === session.user.id ? 'out' : 'in'
+            direction: t.fromUserId === session.user.id ? 'out' : 'in',
+            dbId: t.id
         }))
     ];
 
