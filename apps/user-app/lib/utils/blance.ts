@@ -67,30 +67,41 @@ export async function getBalanceHistory() {
 
     const allTransactions = [
         ...onRampTransactions.map(t => ({
+            id: `onramp_${t.createdAt.getTime()}`,
             date: t.createdAt,
             amount: t.amount / 100, // OnRamp adds money
-            type: 'onramp'
+            type: 'onramp' as const,
+            description: `Added ₹${(t.amount / 100).toFixed(2)}`
         })),
         ...p2pTransactions.map(t => ({
+            id: `p2p_${t.createdAt.getTime()}_${t.fromUserId}_${t.toUserId}`,
             date: t.createdAt,
             // If user sent money, it's negative; if received, positive
             amount: t.fromUserId === session.user.id ? -(t.amount / 100) : (t.amount / 100),
-            type: 'p2p'
+            type: 'p2p' as const,
+            description: t.fromUserId === session.user.id 
+                ? `Sent ₹${(t.amount / 100).toFixed(2)}` 
+                : `Received ₹${(t.amount / 100).toFixed(2)}`
         }))
-    ].sort((a, b) => a.date.getTime() - b.date.getTime());
+    ];
 
-    if (allTransactions.length === 0) {
+    // Remove duplicates by ID and sort chronologically
+    const uniqueTransactions = Array.from(
+        new Map(allTransactions.map(t => [t.id, t])).values()
+    ).sort((a, b) => a.date.getTime() - b.date.getTime());
+
+    if (uniqueTransactions.length === 0) {
         return [{ date: new Date(), amount: actualBalance }];
     }
 
     let runningBalance = 0;
     const balanceHistory: { date: Date; amount: number }[] = [];
 
-    allTransactions.forEach(transaction => {
+    uniqueTransactions.forEach((transaction, index) => {
         runningBalance += transaction.amount;
         balanceHistory.push({
             date: transaction.date,
-            amount: runningBalance
+            amount: Math.round(runningBalance * 100) / 100 // Round to 2 decimal places
         });
     });
 
