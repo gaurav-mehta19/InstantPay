@@ -1,11 +1,8 @@
 "use client"
-import { Button } from "@repo/ui/button"
-import { Card } from "@repo/ui/card"
 import { useState } from "react"
 import { p2pTransfer } from "../lib/actions/p2pTeransfer"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
-import { PhoneInput , Input } from "@repo/ui/input"
 import { IndianRupee } from "lucide-react"
 
 export const SendMoneyCard = () => {

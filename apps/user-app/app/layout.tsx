@@ -3,7 +3,15 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from 'sonner'
 import Providers from "./providers";
-import AppBarClient from "../components/appBClient";
+import dynamic from 'next/dynamic';
+
+// Dynamic import AppBar to prevent SSR issues during error page rendering
+const AppBarClient = dynamic(() => import("../components/appBClient"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-16 bg-gradient-to-r from-primary to-secondary animate-pulse" />
+  )
+});
 
 
 
