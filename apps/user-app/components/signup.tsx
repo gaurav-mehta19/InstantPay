@@ -1,8 +1,4 @@
 "use client";
-import { PrimaryButton } from "@repo/ui/authButton";
-import { Heading } from "@repo/ui/heading";
-import { SubHeading } from "@repo/ui/subHeading";
-import { Input, PhoneInput } from "@repo/ui/input";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { SignupInputTypes } from "@repo/validation/input";

@@ -1,9 +1,5 @@
 "use client";
-import { PrimaryButton } from "@repo/ui/authButton";
-import { Heading } from "@repo/ui/heading";
-import { SubHeading } from "@repo/ui/subHeading";
-import { Input, PhoneInput } from "@repo/ui/input";
-import { useState, useEffect } from "react";
+import React, { memo, useState, useCallback } from "react";
 import { SigninInputTypes } from "@repo/validation/input";
 import { toast } from "sonner";
 import { signIn } from "next-auth/react";
@@ -13,7 +9,7 @@ import Link from "next/link";
 
 
 
-export const SigninComponent = () => {
+export const SigninComponent = memo(() => {
 
     const router = useRouter()
 
@@ -24,7 +20,7 @@ export const SigninComponent = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    async function handleSignin() {
+    const handleSignin = useCallback(async () => {
         if (data.phone.trim().length < 1 || data.password.trim().length < 1) {
             toast.warning("Please fill all fields");
             return;
@@ -61,16 +57,14 @@ export const SigninComponent = () => {
             setIsLoading(false);
             toast.error("An error occurred during signin. Please try again");
         }
-    }
+    }, [data, router]);
 
-    const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        // Remove any non-numeric characters
-        const phoneValue = e.target.value.replace(/\D/g, ''); // This removes anything that's not a number
-        // Limit input to 10 digits
+    const handlePhoneChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        const phoneValue = e.target.value.replace(/\D/g, '');
         if (phoneValue.length <= 10) {
-            setData({ ...data, phone: phoneValue });
+            setData(prev => ({ ...prev, phone: phoneValue }));
         }
-    }
+    }, []);
     
 
     return (
@@ -130,13 +124,14 @@ export const SigninComponent = () => {
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     value={data.password}
-                                    onChange={(e) => setData({ ...data, password: e.target.value })}
+                                    onChange={useCallback((e: React.ChangeEvent<HTMLInputElement>) => 
+                                        setData(prev => ({ ...prev, password: e.target.value })), [])}
                                     placeholder="Enter your password"
                                     className="w-full pl-12 pr-12 py-4 text-lg border border-neutral-200 rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 bg-neutral-50 hover:bg-white"
                                 />
                                 <button
                                     type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
+                                    onClick={useCallback(() => setShowPassword(prev => !prev), [])}
                                     className="absolute inset-y-0 right-0 pr-4 flex items-center text-neutral-400 hover:text-neutral-600 transition-colors"
                                 >
                                     {showPassword ? (
@@ -230,5 +225,7 @@ export const SigninComponent = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+});
+
+SigninComponent.displayName = 'SigninComponent';

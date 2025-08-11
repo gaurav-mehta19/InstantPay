@@ -1,9 +1,42 @@
 
-import { AddMoney } from "../../../components/addMoneyCard"
-// import { P2pTransaction } from "../../../components/p2pTransaction"
-import { BalanceCard } from "../../../components/balanceCard"
-import { BalanceChart } from "../../../components/garph"
+import dynamicImport from "next/dynamic"
 import { getBalance , getBalanceHistory } from "../../../lib/utils/blance"
+
+// Dynamic imports with loading states
+const AddMoney = dynamicImport(() => import("../../../components/addMoneyCard").then(module => ({ default: module.AddMoney })), {
+  loading: () => (
+    <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-elegant border border-neutral-200 p-8 animate-pulse">
+      <div className="h-6 bg-gray-200 rounded w-1/3 mb-4"></div>
+      <div className="h-4 bg-gray-200 rounded w-1/2 mb-6"></div>
+      <div className="space-y-3">
+        <div className="h-12 bg-gray-200 rounded"></div>
+        <div className="h-12 bg-gray-200 rounded"></div>
+        <div className="h-10 bg-gray-200 rounded"></div>
+      </div>
+    </div>
+  ),
+  ssr: false
+})
+
+const BalanceCard = dynamicImport(() => import("../../../components/balanceCard").then(module => ({ default: module.BalanceCard })), {
+  loading: () => (
+    <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-elegant border border-neutral-200 p-8 animate-pulse">
+      <div className="h-6 bg-gray-200 rounded w-1/4 mb-4"></div>
+      <div className="h-8 bg-gray-200 rounded w-1/2 mb-2"></div>
+      <div className="h-4 bg-gray-200 rounded w-1/3"></div>
+    </div>
+  ),
+  ssr: false
+})
+
+const BalanceChart = dynamicImport(() => import("../../../components/garph").then(module => ({ default: module.BalanceChart })), {
+  loading: () => (
+    <div className="animate-pulse">
+      <div className="h-64 bg-gray-200 rounded"></div>
+    </div>
+  ),
+  ssr: false
+})
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0

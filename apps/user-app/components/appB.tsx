@@ -20,7 +20,7 @@ export const AppBar = ({ onsignIn, onsignOut, user, variant = 'dashboard', onDem
     const hiddenPaths = ["/users/signup", "/users/signin"];
     
     // Hide app bar on auth pages only
-    if (hiddenPaths.includes(pathName)) {
+    if (pathName && hiddenPaths.includes(pathName)) {
         return null;
     }
     
@@ -108,45 +108,66 @@ export const AppBar = ({ onsignIn, onsignOut, user, variant = 'dashboard', onDem
 
 
 function ClosedSideBarIcon() {
-    const setIsSideBarOpen = useSetRecoilState(sideBarAtom);
+    try {
+        const setIsSideBarOpen = useSetRecoilState(sideBarAtom);
 
-    return <button 
-        onClick={() => {
-            console.log('Opening sidebar');
-            setIsSideBarOpen(true);
-        }}
-        className='p-2 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-xl hover:from-primary hover:to-secondary hover:text-white transition-all duration-300 group'
-    >
-        <Menu className='h-5 w-5 text-primary group-hover:text-white' />
-    </button>
+        return <button 
+            onClick={() => {
+                console.log('Opening sidebar');
+                setIsSideBarOpen(true);
+            }}
+            className='p-2 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-xl hover:from-primary hover:to-secondary hover:text-white transition-all duration-300 group'
+        >
+            <Menu className='h-5 w-5 text-primary group-hover:text-white' />
+        </button>
+    } catch {
+        // Fallback for SSR or when context is not available
+        return <button className='p-2 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-xl hover:from-primary hover:to-secondary hover:text-white transition-all duration-300 group'>
+            <Menu className='h-5 w-5 text-primary group-hover:text-white' />
+        </button>
+    }
 }
 
 function OpenSideBarIcon() {
-    const setIsSideBarOpen = useSetRecoilState(sideBarAtom);
+    try {
+        const setIsSideBarOpen = useSetRecoilState(sideBarAtom);
 
-    return <button 
-        onClick={() => {
-            console.log('Closing sidebar');
-            setIsSideBarOpen(false);
-        }}
-        className='p-2 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-xl hover:from-primary hover:to-secondary hover:text-white transition-all duration-300 group'
-    >
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5 text-primary group-hover:text-white">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
-        </svg>
-    </button>
+        return <button 
+            onClick={() => {
+                console.log('Closing sidebar');
+                setIsSideBarOpen(false);
+            }}
+            className='p-2 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-xl hover:from-primary hover:to-secondary hover:text-white transition-all duration-300 group'
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5 text-primary group-hover:text-white">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+        </button>
+    } catch {
+        // Fallback for SSR or when context is not available
+        return <button className='p-2 bg-gradient-to-br from-primary-100 to-secondary-100 rounded-xl hover:from-primary hover:to-secondary hover:text-white transition-all duration-300 group'>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-5 text-primary group-hover:text-white">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+        </button>
+    }
 }
 
 function DecideSideBarIcon() {
-    const isSideBarOpen = useRecoilValue(sideBarAtom);
-    return isSideBarOpen ? <OpenSideBarIcon /> : <ClosedSideBarIcon />;
+    try {
+        const isSideBarOpen = useRecoilValue(sideBarAtom);
+        return isSideBarOpen ? <OpenSideBarIcon /> : <ClosedSideBarIcon />;
+    } catch {
+        // Fallback for SSR or when context is not available
+        return <ClosedSideBarIcon />;
+    }
 }
 
 function SideBarIconVisibility() {
     const pathName = usePathname()
     const hiddenPaths = ["/", "/users/signup", "/users/signin", "/landing"];
     
-    if (hiddenPaths.includes(pathName)) {
+    if (pathName && hiddenPaths.includes(pathName)) {
         return null;
     }
     return <DecideSideBarIcon />

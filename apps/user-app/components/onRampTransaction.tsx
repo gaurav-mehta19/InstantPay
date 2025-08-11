@@ -1,4 +1,4 @@
-import { Card } from "@repo/ui/card"
+import React, { memo, useMemo, useCallback } from "react";
 
 interface OnrampTransactionProps {
     transaction: {
@@ -10,7 +10,7 @@ interface OnrampTransactionProps {
     }[]
 }
 
-export const OnrampTransaction = ({ transaction }: OnrampTransactionProps) => {
+export const OnrampTransaction = memo<OnrampTransactionProps>(({ transaction }) => {
     if (!transaction.length) {
         return (
             <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-elegant border border-neutral-200 p-8">
@@ -39,7 +39,7 @@ export const OnrampTransaction = ({ transaction }: OnrampTransactionProps) => {
         );
     }
 
-    const getStatusBgColor = (status: string) => {
+    const getStatusBgColor = useCallback((status: string) => {
         switch (status.toLowerCase()) {
             case "success":
                 return "bg-emerald-50 text-emerald-700 border-emerald-200";
@@ -50,16 +50,15 @@ export const OnrampTransaction = ({ transaction }: OnrampTransactionProps) => {
             default:
                 return "bg-neutral-50 text-neutral-700 border-neutral-200"; 
         }
-    };
+    }, []);
 
-    const getProviderIcon = (provider: string) => {
-        // You can customize this based on different providers
+    const getProviderIcon = useCallback((provider: string) => {
         return (
             <svg className="h-6 w-6 text-accent-emerald" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
             </svg>
         );
-    };
+    }, []);
 
     return (
         <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-elegant border border-neutral-200 p-8">
@@ -93,14 +92,17 @@ export const OnrampTransaction = ({ transaction }: OnrampTransactionProps) => {
                                         From: {t.provider}
                                     </div>
                                     <div className="text-xs text-neutral-500">
-                                        {new Date(t.time).toLocaleDateString('en-US', { 
-                                            year: 'numeric', 
-                                            month: '2-digit', 
-                                            day: '2-digit' 
-                                        })} • {new Date(t.time).toLocaleTimeString('en-US', {
-                                            hour: '2-digit',
-                                            minute: '2-digit'
-                                        })}
+                                        {useMemo(() => {
+                                            const date = new Date(t.time);
+                                            return `${date.toLocaleDateString('en-US', { 
+                                                year: 'numeric', 
+                                                month: '2-digit', 
+                                                day: '2-digit' 
+                                            })} • ${date.toLocaleTimeString('en-US', {
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            })}`;
+                                        }, [t.time])}
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +113,7 @@ export const OnrampTransaction = ({ transaction }: OnrampTransactionProps) => {
                                     {t.status.charAt(0).toUpperCase() + t.status.slice(1)}
                                 </div>
                                 <div className="text-xl font-bold text-accent-emerald">
-                                    + ₹{t.amount / 100}
+                                    {useMemo(() => `+ ₹${t.amount / 100}`, [t.amount])}
                                 </div>
                             </div>
                         </div>
@@ -120,4 +122,6 @@ export const OnrampTransaction = ({ transaction }: OnrampTransactionProps) => {
             </div>
         </div>
     );
-}
+});
+
+OnrampTransaction.displayName = 'OnrampTransaction';
