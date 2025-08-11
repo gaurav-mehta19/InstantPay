@@ -1,7 +1,7 @@
 "use client";
+import React, { memo, useMemo, useCallback } from "react";
 import { Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { formatDate } from "../lib/utils";
-import { Card } from "@repo/ui/card";
 
 interface BalanceChartProps {
   data: Array<{
@@ -10,15 +10,21 @@ interface BalanceChartProps {
   }>;
 }
 
-export function BalanceChart({ data }: BalanceChartProps) {
-    // Format data for chart and ensure proper chronological order
-    const chartData = data
-        .map((item, index) => ({
-            ...item,
-            date: item.date.toISOString(), // Convert to string for chart
-            amount: Number(item.amount.toFixed(2)) // Ensure clean numbers
-        }))
-        .slice(-10); // Show last 10 transactions for better visibility
+export const BalanceChart = memo<BalanceChartProps>(({ data }) => {
+    // Memoize chart data transformation
+    const chartData = useMemo(() => {
+        return data
+            .map((item) => ({
+                ...item,
+                date: item.date.toISOString(),
+                amount: Number(item.amount.toFixed(2))
+            }))
+            .slice(-10);
+    }, [data]);
+
+    // Memoize tick formatter to prevent recreation
+    const dateTickFormatter = useCallback((value: string) => formatDate(new Date(value)), []);
+    const yAxisFormatter = useCallback((value: number) => `₹${value}`, []);
 
   return (
     <div className="h-[320px]">
@@ -26,7 +32,7 @@ export function BalanceChart({ data }: BalanceChartProps) {
         <LineChart data={chartData}>
           <XAxis 
             dataKey="date" 
-            tickFormatter={(value) => formatDate(new Date(value))}
+            tickFormatter={dateTickFormatter}
             stroke="#6b7280"
             fontSize={12}
             axisLine={false}
@@ -35,7 +41,7 @@ export function BalanceChart({ data }: BalanceChartProps) {
           <YAxis
             stroke="#6b7280"
             fontSize={12}
-            tickFormatter={(value) => `₹${value}`}
+            tickFormatter={yAxisFormatter}
             axisLine={false}
             tickLine={false}
           />
@@ -96,4 +102,6 @@ export function BalanceChart({ data }: BalanceChartProps) {
       </ResponsiveContainer>
     </div>
   );
-}
+});
+
+BalanceChart.displayName = 'BalanceChart';

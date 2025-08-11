@@ -1,10 +1,10 @@
-import { Card } from "@repo/ui/card"
+import React, { memo, useMemo } from "react";
 interface BalanceCardprops{
     amount:number,
     locked:number
 }
 
-export const BalanceCard = ({amount,locked}:BalanceCardprops) => {
+export const BalanceCard = memo<BalanceCardprops>(({amount,locked}) => {
     return (
         <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-elegant border border-neutral-200 p-8 hover:shadow-hover transition-all duration-300 h-full flex flex-col">
             <div className="flex items-center mb-8">
@@ -26,7 +26,7 @@ export const BalanceCard = ({amount,locked}:BalanceCardprops) => {
                         <span className="text-neutral-700 font-medium">Available Balance</span>
                     </div>
                     <div className="text-2xl font-bold text-primary">
-                        ₹{(amount/100).toLocaleString('en-IN')}
+                        {useMemo(() => `₹${(amount/100).toLocaleString('en-IN')}`, [amount])}
                     </div>
                 </div>
 
@@ -36,7 +36,7 @@ export const BalanceCard = ({amount,locked}:BalanceCardprops) => {
                         <span className="text-neutral-700 font-medium">Locked Balance</span>
                     </div>
                     <div className="text-2xl font-bold text-accent-emerald">
-                        ₹{(locked/100).toLocaleString('en-IN')}
+                        {useMemo(() => `₹${(locked/100).toLocaleString('en-IN')}`, [locked])}
                     </div>
                 </div>
 
@@ -46,7 +46,7 @@ export const BalanceCard = ({amount,locked}:BalanceCardprops) => {
                         <span className="text-neutral-700 font-semibold">Total Balance</span>
                     </div>
                     <div className="text-3xl font-bold text-neutral-800">
-                        ₹{((amount+locked)/100).toLocaleString('en-IN')}
+                        {useMemo(() => `₹${((amount+locked)/100).toLocaleString('en-IN')}`, [amount, locked])}
                     </div>
                 </div>
             </div>
@@ -55,7 +55,7 @@ export const BalanceCard = ({amount,locked}:BalanceCardprops) => {
             <div className="mt-8 pt-6 border-t border-neutral-200">
                 <div className="grid grid-cols-2 gap-4">
                     <div className="text-center">
-                        <div className="text-xl font-bold text-secondary">₹{(amount/100 * 0.02).toFixed(0)}</div>
+                        <div className="text-xl font-bold text-secondary">{useMemo(() => `₹${(amount/100 * 0.02).toFixed(0)}`, [amount])}</div>
                         <div className="text-sm text-neutral-600">Monthly Savings</div>
                     </div>
                     <div className="text-center">
@@ -65,5 +65,7 @@ export const BalanceCard = ({amount,locked}:BalanceCardprops) => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+});
+
+BalanceCard.displayName = 'BalanceCard';
