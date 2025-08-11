@@ -60,7 +60,7 @@ export const SendMoneyCard = () => {
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in">
-            {/* Transfer Form */}
+            {/* Left Column - Send Money Form */}
             <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-elegant border border-neutral-200 p-8 hover:shadow-hover transition-all duration-300">
                 <div className="flex items-center mb-8">
                     <div className="p-3 bg-gradient-to-br from-primary to-secondary rounded-2xl mr-4">
@@ -141,46 +141,45 @@ export const SendMoneyCard = () => {
                 </div>
             </div>
 
-            {/* Transfer Info */}
+            {/* Right Column - Benefits */}
             <div className="space-y-6">
-                {/* Transfer Benefits */}
-                <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-elegant border border-neutral-200 p-8">
+                <div>
                     <h3 className="text-2xl font-bold text-neutral-800 mb-6">Why Choose P2P Transfer?</h3>
                     
-                    <div className="space-y-4">
-                        <div className="flex items-center space-x-4">
-                            <div className="p-2 bg-gradient-to-br from-accent-emerald to-accent-teal rounded-xl">
-                                <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="space-y-6">
+                        <div className="flex items-start space-x-4">
+                            <div className="p-3 bg-gradient-to-br from-accent-emerald to-accent-teal rounded-xl">
+                                <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                                 </svg>
                             </div>
                             <div>
                                 <h4 className="text-lg font-semibold text-neutral-800">Instant Transfer</h4>
-                                <p className="text-neutral-600 text-sm">Money reaches recipient in seconds</p>
+                                <p className="text-neutral-600">Money reaches recipient in seconds</p>
                             </div>
                         </div>
                         
-                        <div className="flex items-center space-x-4">
-                            <div className="p-2 bg-gradient-to-br from-accent-pink to-accent-coral rounded-xl">
-                                <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className="flex items-start space-x-4">
+                            <div className="p-3 bg-gradient-to-br from-accent-pink to-accent-coral rounded-xl">
+                                <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
                                 </svg>
                             </div>
                             <div>
                                 <h4 className="text-lg font-semibold text-neutral-800">Zero Fees</h4>
-                                <p className="text-neutral-600 text-sm">No charges for P2P transfers</p>
+                                <p className="text-neutral-600">No charges for P2P transfers</p>
                             </div>
                         </div>
                         
-                        <div className="flex items-center space-x-4">
-                            <div className="p-2 bg-gradient-to-br from-primary to-secondary rounded-xl">
-                                <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div className="flex items-start space-x-4">
+                            <div className="p-3 bg-gradient-to-br from-primary to-secondary rounded-xl">
+                                <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                 </svg>
                             </div>
                             <div>
                                 <h4 className="text-lg font-semibold text-neutral-800">Secure & Safe</h4>
-                                <p className="text-neutral-600 text-sm">Bank-grade security for all transfers</p>
+                                <p className="text-neutral-600">Bank-grade security for all transfers</p>
                             </div>
                         </div>
                     </div>
@@ -188,9 +187,9 @@ export const SendMoneyCard = () => {
 
                 {/* Security Notice */}
                 <div className="p-6 bg-gradient-to-r from-primary-50 to-secondary-50 rounded-2xl border border-primary-100">
-                    <div className="flex items-center space-x-3">
-                        <div className="p-2 bg-gradient-to-br from-primary to-secondary rounded-xl">
-                            <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="flex items-start space-x-3">
+                        <div className="p-3 bg-gradient-to-br from-primary to-secondary rounded-xl">
+                            <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
