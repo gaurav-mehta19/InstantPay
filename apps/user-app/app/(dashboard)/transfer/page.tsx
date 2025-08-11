@@ -1,4 +1,11 @@
-import { P2pCard } from "../../../components/p2pCard";
+import { Suspense } from "react";
+import dynamic from "next/dynamic";
+import { ComponentSkeleton } from "../../../components/skeletons";
+
+// Lazy load P2P card component
+const P2pCard = dynamic(() => import("../../../components/p2pCard").then(mod => ({ default: mod.P2pCard })), {
+  loading: () => <ComponentSkeleton />
+});
 
 
 export default function Transfer(){
@@ -19,7 +26,9 @@ export default function Transfer(){
 
             {/* Main Content */}
             <div className="max-w-7xl mx-auto px-6">
-                <P2pCard/>
+                <Suspense fallback={<ComponentSkeleton />}>
+                    <P2pCard/>
+                </Suspense>
             </div>
         </div>
     )

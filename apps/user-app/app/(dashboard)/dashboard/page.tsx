@@ -1,16 +1,31 @@
 
-import { AddMoney } from "../../../components/addMoneyCard"
-// import { P2pTransaction } from "../../../components/p2pTransaction"
-import { BalanceCard } from "../../../components/balanceCard"
-import { BalanceChart } from "../../../components/garph"
+import { Suspense } from "react"
+import dynamic from "next/dynamic"
 import { getBalance , getBalanceHistory } from "../../../lib/utils/blance"
+import { ComponentSkeleton } from "../../../components/skeletons"
 
-export const dynamic = 'force-dynamic'
+// Lazy load components
+const AddMoney = dynamic(() => import("../../../components/addMoneyCard").then(mod => ({ default: mod.AddMoney })), {
+  loading: () => <ComponentSkeleton />
+})
+
+const BalanceCard = dynamic(() => import("../../../components/balanceCard").then(mod => ({ default: mod.BalanceCard })), {
+  loading: () => <ComponentSkeleton />
+})
+
+const BalanceChart = dynamic(() => import("../../../components/garph").then(mod => ({ default: mod.BalanceChart })), {
+  loading: () => <ComponentSkeleton />
+})
+
+export const dynamicParams = true
 export const revalidate = 0
 
 export default async function Dashboard() {
-    const balance = await getBalance()
-    const balanceHistory = await getBalanceHistory()
+    // Fetch data in parallel for better performance
+    const [balance, balanceHistory] = await Promise.all([
+        getBalance(),
+        getBalanceHistory()
+    ])
 
 
     return (
@@ -32,10 +47,14 @@ export default async function Dashboard() {
                     {/* Cards Section */}
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
                         <div className="animate-slide-in-left h-full">
-                            <AddMoney />
+                            <Suspense fallback={<ComponentSkeleton />}>
+                                <AddMoney />
+                            </Suspense>
                         </div>
                         <div className="animate-slide-in-right h-full">
-                            <BalanceCard amount={balance} locked={0} />
+                            <Suspense fallback={<ComponentSkeleton />}>
+                                <BalanceCard amount={balance} locked={0} />
+                            </Suspense>
                         </div>
                     </div>
                     
@@ -50,7 +69,9 @@ export default async function Dashboard() {
                                 </div>
                                 Balance History
                             </h2>
-                            <BalanceChart data={balanceHistory} />
+                            <Suspense fallback={<ComponentSkeleton />}>
+                                <BalanceChart data={balanceHistory} />
+                            </Suspense>
                         </div>
                     </div>
                 </div>

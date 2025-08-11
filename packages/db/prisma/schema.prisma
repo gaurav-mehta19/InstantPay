@@ -42,6 +42,10 @@ model OnRampTransaction {
   userId String
   user User @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
+  
+  @@index([userId, status])
+  @@index([userId, createdAt])
+  @@index([createdAt])
 }
 
 model P2PTransaction {
@@ -54,6 +58,12 @@ model P2PTransaction {
   toUser User @relation(name: "ToUserRealtion", fields: [toUserId], references: [id])
   direction String
   createdAt DateTime @default(now())
+  
+  @@index([fromUserId, status])
+  @@index([toUserId, status])
+  @@index([fromUserId, createdAt])
+  @@index([toUserId, createdAt])
+  @@index([createdAt])
 }
 
 model Bank {
