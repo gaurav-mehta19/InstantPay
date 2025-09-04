@@ -1,5 +1,4 @@
 "use client"
-import { Card } from "@repo/ui/card"
 
 
 interface P2PTransactionProps {
@@ -47,18 +46,6 @@ export const P2pTransaction = ({ transaction }: P2PTransactionProps) => {
         );
     }
 
-    const getStatusColor = (status: string) => {
-        switch (status.toLowerCase()) {
-            case "success":
-                return "#10b981";
-            case "fail":
-                return "#ef4444"; 
-            case "processing":
-                return "#f59e0b"; 
-            default:
-                return "#6b7280"; 
-        }
-    }; 
 
     const getStatusBgColor = (status: string) => {
         switch (status.toLowerCase()) {

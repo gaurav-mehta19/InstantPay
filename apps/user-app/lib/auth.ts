@@ -29,18 +29,13 @@ export const NEXT_AUTH = {
                 const userExist = await prisma.user.findFirst({
                     where: { phone }
                 });
-            
-                if (!userExist) {
-                    throw new Error('Invalid credentials');  // 🔴 Avoid telling user exists or not
-                }
-            
-                if (!userExist.password) {
-                    throw new Error('Invalid credentials');
-                }
-            
-                const passwordMatch = await bcrypt.compare(password, userExist.password);
-            
-                if (!passwordMatch) {
+
+                const dummyHash = "$2b$10$dummyhashdummyhashdummyhashdumm";
+                const hashToCompare = userExist?.password || dummyHash;
+
+                const passwordMatch = await bcrypt.compare(password, hashToCompare);
+
+                if (!userExist || !passwordMatch) {
                     throw new Error('Invalid credentials');
                 }
             

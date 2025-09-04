@@ -407,7 +407,7 @@ export const LandingPage = () => {
                         </p>
                     </div>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div className="text-center group animate-fade-in">
                             <div className="p-6 bg-gradient-to-br from-accent-emerald/10 to-accent-teal/10 rounded-2xl mb-6 group-hover:scale-105 transition-transform duration-300">
                                 <Shield className="h-12 w-12 text-accent-emerald mx-auto animate-float" />
@@ -432,13 +432,7 @@ export const LandingPage = () => {
                             <p className="text-neutral-600">AI-powered monitoring</p>
                         </div>
                         
-                        <div className="text-center group animate-fade-in" style={{animationDelay: '0.3s'}}>
-                            <div className="p-6 bg-gradient-to-br from-secondary/10 to-primary/10 rounded-2xl mb-6 group-hover:scale-105 transition-transform duration-300">
-                                <Building2 className="h-12 w-12 text-secondary mx-auto animate-float" style={{animationDelay: '6s'}} />
-                            </div>
-                            <h3 className="text-xl font-bold text-neutral-800 mb-2">FDIC Insured</h3>
-                            <p className="text-neutral-600">Your deposits protected</p>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
