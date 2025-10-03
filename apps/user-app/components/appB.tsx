@@ -95,16 +95,16 @@ export const AppBar = ({ onsignIn, onsignOut, user, variant = 'dashboard', onDem
                                             )}
                                             {isDemoLoading ? 'Loading...' : 'Try Demo'}
                                             {!isDemoLoading && (
-                                                <svg className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <svg className="h-4 w-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
                                                 </svg>
                                             )}
                                         </button>
                                         
-                                        {/* Enhanced Tooltip with Animations */}
-                                        <div className="absolute left-1/2 -translate-x-1/2 top-full mt-4 w-max max-w-xs z-50 animate-fade-in-bounce">
+                                        {/* Enhanced Tooltip - Fixed Position */}
+                                        <div className="absolute left-1/2 -translate-x-1/2 top-full mt-4 w-max max-w-xs z-50">
                                             {/* Glowing background effect */}
-                                            <div className="absolute inset-0 bg-gradient-to-r from-primary/30 via-accent-indigo/30 to-secondary/30 blur-xl rounded-2xl animate-pulse"></div>
+                                            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent-indigo/20 to-secondary/20 blur-xl rounded-2xl"></div>
                                             
                                             {/* Arrow pointing up */}
                                             <div className="absolute left-1/2 -translate-x-1/2 -top-2 z-10">
@@ -113,13 +113,13 @@ export const AppBar = ({ onsignIn, onsignOut, user, variant = 'dashboard', onDem
                                             </div>
                                             
                                             {/* Main tooltip content with enhanced styling */}
-                                            <div className="relative bg-gradient-to-r from-primary via-accent-indigo to-secondary p-[3px] rounded-2xl shadow-2xl animate-gradient-shift bg-[length:200%_auto]">
+                                            <div className="relative bg-gradient-to-r from-primary via-accent-indigo to-secondary p-[3px] rounded-2xl shadow-2xl">
                                                 <div className="bg-white rounded-2xl p-5 text-center relative overflow-hidden">
                                                     {/* Background pattern */}
                                                     <div className="absolute inset-0 opacity-5">
-                                                        <div className="absolute top-2 left-2 w-3 h-3 bg-primary rounded-full animate-ping"></div>
-                                                        <div className="absolute bottom-3 right-3 w-2 h-2 bg-secondary rounded-full animate-ping" style={{animationDelay: '1s'}}></div>
-                                                        <div className="absolute top-1/2 left-1 w-1 h-1 bg-accent-emerald rounded-full animate-ping" style={{animationDelay: '2s'}}></div>
+                                                        <div className="absolute top-2 left-2 w-3 h-3 bg-primary rounded-full"></div>
+                                                        <div className="absolute bottom-3 right-3 w-2 h-2 bg-secondary rounded-full"></div>
+                                                        <div className="absolute top-1/2 left-1 w-1 h-1 bg-accent-emerald rounded-full"></div>
                                                     </div>
                                                     
                                                     <div className="relative z-10">
