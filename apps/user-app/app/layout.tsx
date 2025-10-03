@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from 'sonner'
 import Providers from "./providers";
 import dynamic from 'next/dynamic';
+import { DemoProvider } from "../contexts/demoContext";
 
 // Dynamic import AppBar to prevent SSR issues during error page rendering
 const AppBarClient = dynamic(() => import("../components/appBClient"), {
@@ -42,16 +43,18 @@ export default function RootLayout({
     <html lang="en">
 
       <Providers>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-          <div>
-            <AppBarClient/>
-          </div>
-          {children}
-          <Toaster
-          richColors
-            position="bottom-left"
-          />
-        </body>
+        <DemoProvider>
+          <body className={`${geistSans.variable} ${geistMono.variable}`}>
+            <div>
+              <AppBarClient/>
+            </div>
+            {children}
+            <Toaster
+            richColors
+              position="bottom-left"
+            />
+          </body>
+        </DemoProvider>
       </Providers>
     </html>
   );
