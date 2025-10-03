@@ -4,10 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
-    "build": "prisma generate --schema=../../packages/db/prisma/schema.prisma && next build",
+    "build": "dotenv -e ../../packages/db/.env -- prisma generate --schema=../../packages/db/prisma/schema.prisma && next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate --schema=../../packages/db/prisma/schema.prisma",
     "db:migrate": "prisma migrate dev --schema=../../packages/db/prisma/schema.prisma",
     "db:generate": "prisma generate --schema=../../packages/db/prisma/schema.prisma",
     "db:seed": "ts-node ../../packages/db/prisma/seed.ts"
@@ -44,6 +43,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.19",
+    "dotenv-cli": "^10.0.0",
     "eslint": "^8",
     "eslint-config-next": "15.0.0-rc.0",
     "postcss": "^8.4.40",
