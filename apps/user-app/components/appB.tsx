@@ -12,9 +12,10 @@ interface AppBarProps {
     user: any;
     variant?: 'landing' | 'dashboard';
     onDemo?: () => void;
+    isDemoLoading?: boolean;
 }
 
-export const AppBar = ({ onsignIn, onsignOut, user, variant = 'dashboard', onDemo }: AppBarProps) => {
+export const AppBar = ({ onsignIn, onsignOut, user, variant = 'dashboard', onDemo, isDemoLoading }: AppBarProps) => {
     const router = useRouter()
     const pathName = usePathname()
     const hiddenPaths = ["/users/signup", "/users/signin"];
@@ -76,12 +77,71 @@ export const AppBar = ({ onsignIn, onsignOut, user, variant = 'dashboard', onDem
                         ) : (
                             <div className="flex items-center space-x-4">
                                 {currentVariant === 'landing' && onDemo && (
-                                    <button 
-                                        onClick={onDemo}
-                                        className="px-4 py-2 text-primary border border-primary rounded-full hover:bg-primary hover:text-white transition-all duration-300 font-medium"
-                                    >
-                                        Try Demo
-                                    </button>
+                                    <div className="relative flex flex-col items-center group">
+                                        <button 
+                                            onClick={onDemo}
+                                            disabled={isDemoLoading}
+                                            className={`px-6 py-3 text-primary border-2 border-primary rounded-full transition-all duration-300 font-semibold flex items-center gap-2 shadow-lg hover:shadow-xl ${
+                                                isDemoLoading 
+                                                    ? 'bg-primary/10 cursor-not-allowed opacity-70' 
+                                                    : 'hover:bg-primary hover:text-white hover:scale-105 hover:border-primary-600'
+                                            }`}
+                                        >
+                                            {isDemoLoading && (
+                                                <svg className="animate-spin h-4 w-4 text-primary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                    <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                                </svg>
+                                            )}
+                                            {isDemoLoading ? 'Loading...' : 'Try Demo'}
+                                            {!isDemoLoading && (
+                                                <svg className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                                                </svg>
+                                            )}
+                                        </button>
+                                        
+                                        {/* Enhanced Tooltip with Animations */}
+                                        <div className="absolute left-1/2 -translate-x-1/2 top-full mt-4 w-max max-w-xs z-50 animate-fade-in-bounce">
+                                            {/* Glowing background effect */}
+                                            <div className="absolute inset-0 bg-gradient-to-r from-primary/30 via-accent-indigo/30 to-secondary/30 blur-xl rounded-2xl animate-pulse"></div>
+                                            
+                                            {/* Arrow pointing up */}
+                                            <div className="absolute left-1/2 -translate-x-1/2 -top-2 z-10">
+                                                <div className="w-0 h-0 border-l-[10px] border-r-[10px] border-b-[10px] border-l-transparent border-r-transparent border-b-primary"></div>
+                                                <div className="absolute top-[2px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[8px] border-r-[8px] border-b-[8px] border-l-transparent border-r-transparent border-b-white"></div>
+                                            </div>
+                                            
+                                            {/* Main tooltip content with enhanced styling */}
+                                            <div className="relative bg-gradient-to-r from-primary via-accent-indigo to-secondary p-[3px] rounded-2xl shadow-2xl animate-gradient-shift bg-[length:200%_auto]">
+                                                <div className="bg-white rounded-2xl p-5 text-center relative overflow-hidden">
+                                                    {/* Background pattern */}
+                                                    <div className="absolute inset-0 opacity-5">
+                                                        <div className="absolute top-2 left-2 w-3 h-3 bg-primary rounded-full animate-ping"></div>
+                                                        <div className="absolute bottom-3 right-3 w-2 h-2 bg-secondary rounded-full animate-ping" style={{animationDelay: '1s'}}></div>
+                                                        <div className="absolute top-1/2 left-1 w-1 h-1 bg-accent-emerald rounded-full animate-ping" style={{animationDelay: '2s'}}></div>
+                                                    </div>
+                                                    
+                                                    <div className="relative z-10">
+                                                        <div className="flex items-center justify-center">
+                                                           
+                                                        </div>
+                                                        <div className="space-y-3">
+                                                            <p className="text-sm text-neutral-700 font-semibold leading-relaxed">
+                                                                <span className="relative">
+                                                                    <span className="bg-gradient-to-r from-primary to-accent-indigo bg-clip-text text-transparent font-bold text-base">Click "Try Demo"</span>
+                                                                    <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-accent-indigo rounded-full"></span>
+                                                                </span>
+                                                                {" "}to experience our platform with a{" "}
+                                                                <span className="bg-gradient-to-r from-accent-emerald to-accent-teal bg-clip-text text-transparent font-bold text-base">live demo account</span>
+                                                            </p>
+                                                           
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 )}
                                 {currentVariant === 'dashboard' && (
                                     <button

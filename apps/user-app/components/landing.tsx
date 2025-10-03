@@ -3,13 +3,26 @@
 import Link from 'next/link';;
 import { SendHorizontal, Building2, Wallet2, ArrowRight, Shield, Zap, Clock, Users, Coins, ChevronRight } from "lucide-react";
 import { MapPin, Phone, Mail } from "lucide-react";
+import { useDemoContext } from "../contexts/demoContext";
 
 
 export const LandingPage = () => {
-
+    const { isDemoLoading, shouldRedirect } = useDemoContext();
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50">
+        <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50 relative">
+            {/* Demo Loading Overlay */}
+            {(isDemoLoading || shouldRedirect) && (
+                <div className="fixed inset-0 bg-white/80 backdrop-blur-sm z-50 flex items-center justify-center">
+                    <div className="text-center">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                        <p className="text-xl font-semibold text-primary">
+                            {shouldRedirect ? 'Redirecting to your dashboard...' : 'Setting up your demo experience...'}
+                        </p>
+                        <p className="text-neutral-600 mt-2">Please wait while we prepare your dashboard</p>
+                    </div>
+                </div>
+            )}
 
             {/* Hero Section */}
             <div className="relative overflow-hidden">

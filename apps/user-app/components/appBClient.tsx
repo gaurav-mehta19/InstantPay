@@ -1,15 +1,61 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { signIn, signOut, useSession } from "next-auth/react"
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { AppBar } from "./appB";
+import { useDemoContext } from "../contexts/demoContext";
 
 export default function AppBarClient() {
     const session = useSession()
     const router = useRouter()
+    const pathname = usePathname()
+    
+    let isDemoLoading = false;
+    let setIsDemoLoading: (loading: boolean) => void = () => {};
+    let shouldRedirect = false;
+    let setShouldRedirect: (redirect: boolean) => void = () => {};
+    
+    try {
+        const context = useDemoContext();
+        isDemoLoading = context.isDemoLoading;
+        setIsDemoLoading = context.setIsDemoLoading;
+        shouldRedirect = context.shouldRedirect;
+        setShouldRedirect = context.setShouldRedirect;
+    } catch (error) {
+        console.warn('Demo context not available:', error);
+    }
+    
+    // Clear loading state when user is on dashboard and authenticated
+    useEffect(() => {
+        if (isDemoLoading && session.data?.user && pathname?.startsWith('/dashboard')) {
+            // User is authenticated and on dashboard, clear loading state
+            const timer = setTimeout(() => {
+                console.log('Clearing demo loading state - user on dashboard');
+                setIsDemoLoading(false);
+                setShouldRedirect(false);
+            }, 300);
+            return () => clearTimeout(timer);
+        }
+    }, [isDemoLoading, session.data?.user, pathname, setIsDemoLoading, setShouldRedirect])
+    
+    // Auto-clear loading state after 10 seconds as fallback
+    useEffect(() => {
+        if (isDemoLoading) {
+            const fallbackTimer = setTimeout(() => {
+                console.log('Auto-clearing demo loading state after timeout');
+                setIsDemoLoading(false);
+            }, 10000); // 10 second fallback
+            
+            return () => clearTimeout(fallbackTimer);
+        }
+    }, [isDemoLoading, setIsDemoLoading])
+    
+
     
     const handleDemo = async () => {
+        setIsDemoLoading(true)
+        setShouldRedirect(true)
         const loadingToastId = toast.loading("Signing in as Test User");
         try {
             const res = await signIn('credentials', {
@@ -22,14 +68,21 @@ export default function AppBarClient() {
 
             if (res?.error) {
                 toast.error(res.error);
+                setIsDemoLoading(false)
+                setShouldRedirect(false)
             } else {
                 toast.success("Signed in Test User");
-                router.push('/dashboard');
+                // Redirect to dashboard - loading state will be cleared by useEffect
+                setTimeout(() => {
+                    router.push('/dashboard');
+                }, 1200);
             }
         } catch (err) {
             console.log("Demo signin error ", err);
             toast.dismiss(loadingToastId);
             toast.error("An error occurred during demo signin. Please try again");
+            setIsDemoLoading(false)
+            setShouldRedirect(false)
         }
     }
     
@@ -38,22 +91,25 @@ export default function AppBarClient() {
             onsignIn={signIn} 
             onsignOut={async () => {
                 try {
+                    // Clear demo loading state before logout
+                    setIsDemoLoading(false);
                     await signOut({redirect: false})
                     // Clear any cached data and force full page reload
                     if (typeof window !== 'undefined') {
-                        window.location.href = "/users/signin"
+                        window.location.href = "/landing"
                     }
                     toast.success("Logged out successfully")
                 } catch (error) {
                     toast.error("Error during logout")
                     // Fallback: still redirect to clear any cached state
                     if (typeof window !== 'undefined') {
-                        window.location.href = "/users/signin"
+                        window.location.href = "/landing"
                     }
                 }
             }} 
-            user={session.data?.user}
+            user={(isDemoLoading || shouldRedirect) ? null : session.data?.user}
             onDemo={handleDemo}
+            isDemoLoading={isDemoLoading}
         />
     )
 }

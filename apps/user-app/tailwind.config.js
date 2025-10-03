@@ -171,6 +171,10 @@ module.exports = {
           '0%, 100%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
         },
+        'flash': {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.5' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -182,6 +186,7 @@ module.exports = {
         'bounce-gentle': 'bounce-gentle 2s ease-in-out infinite',
         'pulse-slow': 'pulse-slow 3s ease-in-out infinite',
         'gradient-shift': 'gradient-shift 6s ease infinite',
+        'flash': 'flash 1.5s ease-in-out infinite',
       },
     },
   },
