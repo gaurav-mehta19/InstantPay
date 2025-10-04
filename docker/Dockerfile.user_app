@@ -1,0 +1,20 @@
+FROM node:20.12.0-alpine3.19
+
+WORKDIR /usr/src/app
+
+# Copy package files and turbo configuration
+COPY package.json yarn.lock turbo.json ./
+
+# Copy workspace configuration
+COPY apps ./apps
+COPY packages ./packages
+
+# Install dependencies
+RUN yarn install --frozen-lockfile
+
+# Build the project (includes Prisma generation and Next.js build)
+RUN yarn build
+
+
+# Start the user app
+CMD ["yarn", "start-user-app"]
