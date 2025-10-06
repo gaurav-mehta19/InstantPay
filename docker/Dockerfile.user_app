@@ -5,8 +5,9 @@ WORKDIR /usr/src/app
 # Copy package files and turbo configuration
 COPY package.json yarn.lock turbo.json ./
 
-# Copy workspace configuration
-COPY apps ./apps
+# Copy only required workspace components
+# COPY apps ./apps
+COPY apps/user-app ./apps/user-app
 COPY packages ./packages
 
 # Install dependencies
