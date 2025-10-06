@@ -56,31 +56,22 @@ export default function AppBarClient() {
     const handleDemo = async () => {
         setIsDemoLoading(true)
         setShouldRedirect(true)
-        const loadingToastId = toast.loading("Signing in as Test User");
         try {
             const res = await signIn('credentials', {
                 phone: process.env.NEXT_PUBLIC_PHONE,
                 password: process.env.NEXT_PUBLIC_PASSWORD,
                 redirect: false
             })
-
-            toast.dismiss(loadingToastId);
-
             if (res?.error) {
-                toast.error(res.error);
                 setIsDemoLoading(false)
                 setShouldRedirect(false)
             } else {
-                toast.success("Signed in Test User");
-                // Redirect to dashboard - loading state will be cleared by useEffect
                 setTimeout(() => {
                     router.push('/dashboard');
                 }, 1200);
             }
         } catch (err) {
             console.log("Demo signin error ", err);
-            toast.dismiss(loadingToastId);
-            toast.error("An error occurred during demo signin. Please try again");
             setIsDemoLoading(false)
             setShouldRedirect(false)
         }
