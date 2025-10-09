@@ -22,7 +22,7 @@ export async function p2pTransfer(to: string, amount: number) {
     }
 
     const result = await prisma.$transaction(async (tx) => {
-        const fromBalance = await prisma.balance.findUnique({
+        const fromBalance = await tx.balance.findUnique({
             where: {
                 userId: from,
             },
