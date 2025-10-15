@@ -6,7 +6,7 @@ import prisma from "@repo/db/client";
 
 export async function createOnRampTransaction(amount:number , provider:string){
     const session = await getServerSession(NEXT_AUTH)
-    const token = randomBytes(32).toString('hex');
+    const token = randomBytes(32).toString('hex'); // axios.get('/hdfc/getToken',{amount:amount,userID:userid})
     const userId = session?.user?.id
 
     if(!userId){
