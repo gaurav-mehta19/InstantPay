@@ -19,7 +19,6 @@ export async function getP2Ptransaction() {
         orderBy: {
             createdAt: "desc",
         },
-        take: 8,
         select: {
             id: true,
             createdAt: true,
@@ -70,7 +69,6 @@ export async function getTransaction() {
         orderBy: {
             createdAt: "desc",
         },
-        take: 8,
     });
 
     return transaction.map((t) => ({

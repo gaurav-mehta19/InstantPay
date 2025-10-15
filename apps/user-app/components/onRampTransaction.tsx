@@ -1,4 +1,7 @@
+"use client"
+
 import React, { memo, useMemo, useCallback } from "react";
+import { FixedSizeList } from 'react-window';
 
 interface OnrampTransactionProps {
     transaction: {
@@ -60,6 +63,59 @@ export const OnrampTransaction = memo<OnrampTransactionProps>(({ transaction }) 
         );
     }, []);
 
+    // Row renderer for virtualized list
+    const Row = ({ index, style }: { index: number; style: React.CSSProperties }) => {
+        const t = transaction[index];
+        if (!t) return null;
+        
+        const date = new Date(t.time);
+        const formattedDate = `${date.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: '2-digit', 
+            day: '2-digit' 
+        })} • ${date.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit'
+        })}`;
+        
+        return (
+            <div style={{ ...style, paddingBottom: '16px' }}>
+                <div className="p-8 bg-gradient-to-r from-accent-emerald/5 to-accent-teal/5 rounded-2xl border border-accent-emerald/10 hover:shadow-md transition-all duration-300 animate-fade-in">
+                    <div className="flex items-center justify-between">
+                        {/* Transaction Info */}
+                        <div className="flex items-center space-x-4">
+                            <div className="p-3 bg-gradient-to-br from-accent-emerald/10 to-accent-teal/10 rounded-2xl">
+                                {getProviderIcon(t.provider)}
+                            </div>
+                            
+                            <div>
+                                <div className="font-semibold text-neutral-800 text-lg">
+                                    Money Added
+                                </div>
+                                <div className="text-sm text-neutral-600">
+                                    From: {t.provider}
+                                </div>
+                                <div className="text-xs text-neutral-500">
+                                    {formattedDate}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {/* Status and Amount */}
+                        <div className="text-right">
+                            <div className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${getStatusBgColor(t.status)} mb-2`}>
+                                {t.status.charAt(0).toUpperCase() + t.status.slice(1)}
+                            </div>
+                            <div className="text-xl font-bold text-accent-emerald">
+                                + ₹{t.amount / 100}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    };
+
     return (
         <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-elegant border border-neutral-200 p-8">
             <div className="flex items-center mb-6">
@@ -74,51 +130,16 @@ export const OnrampTransaction = memo<OnrampTransactionProps>(({ transaction }) 
                 </div>
             </div>
             
-            <div className="max-h-[500px] overflow-y-auto space-y-4 pr-2">
-                {transaction.map((t, index) => (
-                    <div key={t.id} className="p-8 bg-gradient-to-r from-accent-emerald/5 to-accent-teal/5 rounded-2xl border border-accent-emerald/10 hover:shadow-md transition-all duration-300 animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
-                        <div className="flex items-center justify-between">
-                            {/* Transaction Info */}
-                            <div className="flex items-center space-x-4">
-                                <div className="p-3 bg-gradient-to-br from-accent-emerald/10 to-accent-teal/10 rounded-2xl">
-                                    {getProviderIcon(t.provider)}
-                                </div>
-                                
-                                <div>
-                                    <div className="font-semibold text-neutral-800 text-lg">
-                                        Money Added
-                                    </div>
-                                    <div className="text-sm text-neutral-600">
-                                        From: {t.provider}
-                                    </div>
-                                    <div className="text-xs text-neutral-500">
-                                        {useMemo(() => {
-                                            const date = new Date(t.time);
-                                            return `${date.toLocaleDateString('en-US', { 
-                                                year: 'numeric', 
-                                                month: '2-digit', 
-                                                day: '2-digit' 
-                                            })} • ${date.toLocaleTimeString('en-US', {
-                                                hour: '2-digit',
-                                                minute: '2-digit'
-                                            })}`;
-                                        }, [t.time])}
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            {/* Status and Amount */}
-                            <div className="text-right">
-                                <div className={`inline-block px-3 py-1 rounded-full text-xs font-medium border ${getStatusBgColor(t.status)} mb-2`}>
-                                    {t.status.charAt(0).toUpperCase() + t.status.slice(1)}
-                                </div>
-                                <div className="text-xl font-bold text-accent-emerald">
-                                    {useMemo(() => `+ ₹${t.amount / 100}`, [t.amount])}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ))}
+            <div className="pr-2">
+                <FixedSizeList
+                    height={500}
+                    itemCount={transaction.length}
+                    itemSize={150}
+                    width="100%"
+                    className="scrollbar-thin scrollbar-thumb-neutral-300 scrollbar-track-neutral-100"
+                >
+                    {Row}
+                </FixedSizeList>
             </div>
         </div>
     );
