@@ -20,7 +20,21 @@ app.post('/hdfcWebhook', async (req, res) => {
     userId: req.body.user_identifier,
     amount: req.body.amount,
   };
+
+  //only if onramp transaction with token exists and is in processing state
   
+  // const onRampTransaction = await prisma.onRampTransaction.findUnique({
+  //   where: {
+  //     token: paymentInfromation.token
+  //   }
+  // });
+
+  // if (!onRampTransaction || onRampTransaction.status !== "Processing") {
+  //   return res.status(400).json({
+  //     message: "Invalid onramp transaction"
+  //   });
+  // }
+
   try {
     await prisma.$transaction([
       prisma.balance.update({
