@@ -36,7 +36,7 @@ export const AppBar = ({ onsignIn, onsignOut, user, variant = 'dashboard', onDem
                     <div className="flex items-center space-x-6">
                         {currentVariant === 'dashboard' && <SideBarIconVisibility />}
                         <div className="flex items-center space-x-2 group">
-                            <Wallet2 className="h-8 w-8 text-primary animate-bounce-gentle" />
+                            <Wallet2 className="h-8 w-8 text-primary" />
                             <span 
                                 onClick={() => { window.location.href = "/" }} 
                                 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent cursor-pointer hover:scale-105 transition-transform duration-300"
@@ -100,47 +100,6 @@ export const AppBar = ({ onsignIn, onsignOut, user, variant = 'dashboard', onDem
                                                 </svg>
                                             )}
                                         </button>
-                                        
-                                        {/* Enhanced Tooltip - Fixed Position */}
-                                        <div className="absolute left-1/2 -translate-x-1/2 top-full mt-4 w-max max-w-xs z-50">
-                                            {/* Glowing background effect */}
-                                            <div className="absolute inset-0 bg-gradient-to-r from-primary/20 via-accent-indigo/20 to-secondary/20 blur-xl rounded-2xl"></div>
-                                            
-                                            {/* Arrow pointing up */}
-                                            <div className="absolute left-1/2 -translate-x-1/2 -top-2 z-10">
-                                                <div className="w-0 h-0 border-l-[10px] border-r-[10px] border-b-[10px] border-l-transparent border-r-transparent border-b-primary"></div>
-                                                <div className="absolute top-[2px] left-1/2 -translate-x-1/2 w-0 h-0 border-l-[8px] border-r-[8px] border-b-[8px] border-l-transparent border-r-transparent border-b-white"></div>
-                                            </div>
-                                            
-                                            {/* Main tooltip content with enhanced styling */}
-                                            <div className="relative bg-gradient-to-r from-primary via-accent-indigo to-secondary p-[3px] rounded-2xl shadow-2xl">
-                                                <div className="bg-white rounded-2xl p-5 text-center relative overflow-hidden">
-                                                    {/* Background pattern */}
-                                                    <div className="absolute inset-0 opacity-5">
-                                                        <div className="absolute top-2 left-2 w-3 h-3 bg-primary rounded-full"></div>
-                                                        <div className="absolute bottom-3 right-3 w-2 h-2 bg-secondary rounded-full"></div>
-                                                        <div className="absolute top-1/2 left-1 w-1 h-1 bg-accent-emerald rounded-full"></div>
-                                                    </div>
-                                                    
-                                                    <div className="relative z-10">
-                                                        <div className="flex items-center justify-center">
-                                                           
-                                                        </div>
-                                                        <div className="space-y-3">
-                                                            <p className="text-sm text-neutral-700 font-semibold leading-relaxed">
-                                                                <span className="relative">
-                                                                    <span className="bg-gradient-to-r from-primary to-accent-indigo bg-clip-text text-transparent font-bold text-base">Click "Try Demo"</span>
-                                                                    <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-gradient-to-r from-primary to-accent-indigo rounded-full"></span>
-                                                                </span>
-                                                                {" "}to experience our platform with a{" "}
-                                                                <span className="bg-gradient-to-r from-accent-emerald to-accent-teal bg-clip-text text-transparent font-bold text-base">live demo account</span>
-                                                            </p>
-                                                           
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 )}
                                 {currentVariant === 'dashboard' && (
