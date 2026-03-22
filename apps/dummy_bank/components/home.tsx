@@ -95,13 +95,13 @@ export default function Home() {
       <div className="bg-[#003b8e] text-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <div>
-            <p className="text-xs text-blue-100">SecureBank Internet Banking</p>
+            <p className="text-xs text-blue-100">InstantPay Sandbox</p>
             <h1 className="text-xl font-semibold tracking-wide">
-              Retail Login Portal
+              Demo Authorization Portal
             </h1>
           </div>
           <div className="text-right text-xs text-blue-100">
-            <p>256-bit SSL Secured Session</p>
+            <p>Non-production demo environment</p>
             <p>System Time: {systemTime}</p>
           </div>
         </div>
@@ -109,18 +109,22 @@ export default function Home() {
 
       <div className="border-b border-slate-300 bg-white">
         <div className="mx-auto flex max-w-6xl gap-6 px-4 py-2 text-sm font-medium text-slate-700">
-          <span className="text-[#003b8e]">Personal Banking</span>
-          <span>Corporate Banking</span>
-          <span>Loans</span>
-          <span>Cards</span>
-          <span>Support</span>
+          <span className="text-[#003b8e]">Demo Flow</span>
+          <span>Wallet Top-up Simulation</span>
+          <span>Webhook Testing</span>
         </div>
       </div>
 
       <div className="mx-auto mt-4 max-w-6xl px-4">
+        <div className="mb-3 flex items-center gap-2 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+          <AlertTriangle className="h-4 w-4" />
+          Sandbox only: This page is for local/testing flows. Do not enter real
+          bank credentials.
+        </div>
+
         <div className="flex items-center gap-2 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
           <AlertTriangle className="h-4 w-4" />
-          Demo credentials: Customer ID{" "}
+          Demo credentials: User ID{" "}
           <strong className="mx-1">Dummy_user</strong> | Password{" "}
           <strong className="ml-1">Dummy@1234</strong>
         </div>
@@ -130,16 +134,16 @@ export default function Home() {
         <Card className="border border-slate-300 bg-white shadow-sm">
           <div className="border-b border-slate-200 px-6 py-4">
             <h2 className="text-lg font-semibold text-slate-900">
-              Login to NetBanking
+              Authorize Demo Top-up
             </h2>
             <p className="mt-1 text-sm text-slate-600">
-              Please authorize this payment request to continue.
+              Verify demo credentials to simulate a bank authorization callback.
             </p>
           </div>
 
           <div className="space-y-4 px-6 py-6">
             <FormField
-              label="Customer ID / User ID"
+              label="Demo User ID"
               htmlFor="customerId"
               labelClassName="mb-1 block text-sm font-medium text-slate-700"
             >
@@ -151,13 +155,13 @@ export default function Home() {
                   setData((prev) => ({ ...prev, customerId: e.target.value }))
                 }
                 className="w-full rounded-md border border-slate-300 px-3 py-2 focus:border-[#003b8e] focus:outline-none focus:ring-2 focus:ring-blue-200"
-                placeholder="Enter Customer ID"
+                placeholder="Enter demo user ID"
                 autoComplete="username"
               />
             </FormField>
 
             <FormField
-              label="Login Password"
+              label="Demo Password"
               htmlFor="password"
               labelClassName="mb-1 block text-sm font-medium text-slate-700"
             >
@@ -169,7 +173,7 @@ export default function Home() {
                   setData((prev) => ({ ...prev, password: e.target.value }))
                 }
                 className="w-full rounded-md border border-slate-300 px-3 py-2 focus:border-[#003b8e] focus:outline-none focus:ring-2 focus:ring-blue-200"
-                placeholder="Enter Password"
+                placeholder="Enter demo password"
                 autoComplete="current-password"
               />
             </FormField>
@@ -183,8 +187,8 @@ export default function Home() {
             </Button>
 
             <p className="text-xs text-slate-500">
-              By continuing, you authorize SecureBank to process this wallet
-              funding request.
+              Continuing triggers a demo webhook to your configured
+              `bank-webhook` service.
             </p>
           </div>
         </Card>
@@ -193,12 +197,12 @@ export default function Home() {
           <Card className="border border-slate-300 bg-white p-5 shadow-sm">
             <div className="mb-3 flex items-center gap-2 text-slate-900">
               <ShieldCheck className="h-5 w-5 text-emerald-600" />
-              <h3 className="font-semibold">Security Tips</h3>
+              <h3 className="font-semibold">Testing Notes</h3>
             </div>
             <ul className="space-y-2 text-sm text-slate-600">
-              <li>Never share OTP or password with anyone.</li>
-              <li>Always verify URL before login.</li>
-              <li>Use virtual keyboard for high-risk networks.</li>
+              <li>Use only demo credentials on this portal.</li>
+              <li>Keep webhook URL and signing secret in sync.</li>
+              <li>Rotate dummy credentials for shared demos.</li>
             </ul>
           </Card>
 
@@ -208,7 +212,7 @@ export default function Home() {
               <h3 className="font-semibold">Need Help?</h3>
             </div>
             <p className="text-sm text-slate-600">
-              Call 1800-000-000 or email support@securebank.demo
+              Contact project maintainer or check README setup steps.
             </p>
           </Card>
         </aside>
@@ -216,7 +220,7 @@ export default function Home() {
 
       <footer className="border-t border-slate-200 bg-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 text-xs text-slate-500">
-          <p>© SecureBank Ltd. All rights reserved.</p>
+          <p>© InstantPay Sandbox. Demo use only.</p>
           <div className="space-x-4">
             <a href="#" className="hover:text-slate-700">
               Terms
