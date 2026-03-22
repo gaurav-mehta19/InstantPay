@@ -1,184 +1,229 @@
 "use client";
-import React, { useState } from "react";
-import { Lock, Info, Shield } from "lucide-react";
-import { addMoney } from "@/lib/actions/addmoney";
+
+import React, { useEffect, useMemo, useState } from "react";
+import { AlertTriangle, Lock, ShieldCheck } from "lucide-react";
+import { addMoney } from "@/lib/actions/addMoneyAction";
 import { useSearchParams } from "next/navigation";
-import { checkCredentials } from "@/lib/actions/check_credentials";
-import {toast } from "sonner";
-import axios from "axios";
+import { checkCredentials } from "@/lib/actions/checkCredentialsAction";
+import { submitWebhook } from "@/lib/actions/submitWebhook";
+import { toast } from "sonner";
+import { Card } from "@repo/ui/card";
+import { FormField } from "@repo/ui/formField";
+import { TextInput } from "@repo/ui/textInput";
+import { Button } from "@repo/ui/button";
+
+const userAppBaseUrl =
+  process.env.NEXT_PUBLIC_USER_APP_BASE_URL ?? "http://localhost:3000";
 
 export default function Home() {
   const [data, setData] = useState({
-    customerId: "",
-    password: "",
+    customerId: "Dummy_user",
+    password: "Dummy@1234",
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const searchParams = useSearchParams();
 
-  const token = searchParams.get("token") || "";
-  
+  const token = useMemo(() => searchParams.get("token") || "", [searchParams]);
+  const [systemTime, setSystemTime] = useState<string>("--:--:--");
+
+  const isFormValid =
+    data.customerId.trim().length > 0 && data.password.trim().length > 0;
+
+  useEffect(() => {
+    const update = () => setSystemTime(new Date().toLocaleString("en-IN"));
+    update();
+    const timer = setInterval(update, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   async function handleAddMoney() {
+    if (!token) {
+      toast.error("Missing transaction token. Please restart payment.");
+      return;
+    }
 
-    const loadingToastId = toast.loading("Adding money to your account...");
+    if (!isFormValid) {
+      toast.warning("Please enter Customer ID and Password.");
+      return;
+    }
 
-    const user = await addMoney(token);
+    setIsSubmitting(true);
+    const loadingToastId = toast.loading("Verifying credentials...");
 
-  
-    if (user.transaction) {
-      const credentialsCheck = await checkCredentials(data.customerId, data.password, user.transaction.amount);
-      if (credentialsCheck.message === "Success") {
-
-        await axios.post("https://instantpay-ughi.onrender.com/hdfcWebhook", {
-          token: token,
-          user_identifier: user.transaction.userId,
-          amount: user.transaction.amount
-        })
+    try {
+      const user = await addMoney(token);
+      if (!user.transaction) {
         toast.dismiss(loadingToastId);
-        toast.success("Transaction successful");
-
-        window.location.href = "https://instant-pay-user-app.vercel.app/dashboard";
-
-      } else {
-        toast.warning(credentialsCheck.message);
+        toast.error(user.message || "Invalid transaction");
+        return;
       }
-      
-    } else {
-      console.error("Transaction data is undefined");
-    }
-  
-    }
 
+      const credentialsCheck = await checkCredentials(
+        data.customerId.trim(),
+        data.password,
+        user.transaction.amount,
+      );
+
+      if (credentialsCheck.message !== "Success") {
+        toast.dismiss(loadingToastId);
+        toast.warning(credentialsCheck.message);
+        return;
+      }
+
+      const webhookResult = await submitWebhook({
+        token,
+        userId: user.transaction.userId,
+        amountInPaise: user.transaction.amount,
+      });
+
+      if (!webhookResult.ok) {
+        toast.dismiss(loadingToastId);
+        toast.error(webhookResult.message);
+        return;
+      }
+
+      toast.dismiss(loadingToastId);
+      toast.success("Payment authorized. Redirecting...");
+      window.location.href = `${userAppBaseUrl}/dashboard?funded=1`;
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-5xl mx-auto px-4 py-4">
-          <h1 className="text-2xl font-semibold text-gray-800">
-            Welcome to SecureBank NetBanking
-          </h1>
-        </div>
-      </header>
-
-      {/* Vibrant Banner */}
-      <div className="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 
-  text-white text-center py-4 text-2xl md:text-3xl font-extrabold 
-  animate-pulse shadow-lg sticky top-0 z-50">
-  🚀 Use <span className="underline">Customer ID:</span> <span className="text-yellow-300">Test_User</span> 
-  & <span className="underline">Password:</span> <span className="text-yellow-300">123456789</span> for testing! 🚀
-</div>
-      <main className="max-w-5xl min-h-[600px] mt-10 mx-auto px-4 py-8">
-        <div className="grid md:grid-cols-[2fr,1fr] gap-8">
-          {/* Login Section */}
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-semibold mb-6">Login to NetBanking</h2>
-
-            <div className="space-y-4 max-w-md">
-              <div>
-                <label
-                  htmlFor="customerId"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-                >
-                  Customer ID/ User ID
-                </label>
-                <input
-                  type="text"
-                  id="customerId"
-                  value={data.customerId}
-                  onChange={(e)=> setData({...data, customerId: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter Customer ID"
-                />
-                <label
-                  htmlFor="password"
-                  className="block text-sm mt-3.5 font-medium text-gray-700 mb-1"
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  value={data.password}
-                  onChange={(e)=> setData({...data, password: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter Password"
-                />
-              </div>
-
-              <button onClick={handleAddMoney} className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors">
-                Continue
-              </button>
-
-              <div className="bg-blue-50 border border-blue-100 rounded-md p-4 mt-6">
-                <p className="text-sm text-gray-800 font-medium">
-                  Dear Customer,
-                </p>
-                <p className="text-sm text-gray-600 mt-1">
-                  Welcome to the new login page of SecureBank NetBanking. Its
-                  lighter look and feel is designed to give you the best
-                  possible user experience. Please continue to login using your
-                  customer ID and password.
-                </p>
-              </div>
-            </div>
+    <div className="min-h-screen bg-[#eef2f7]">
+      <div className="bg-[#003b8e] text-white">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+          <div>
+            <p className="text-xs text-blue-100">SecureBank Internet Banking</p>
+            <h1 className="text-xl font-semibold tracking-wide">
+              Retail Login Portal
+            </h1>
           </div>
-
-          {/* Security Section */}
-          <div className="space-y-6">
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <div className="flex items-center justify-center mb-4">
-                <Shield className="w-12 h-12 text-green-600" />
-              </div>
-              <p className="text-center text-gray-600 text-sm">
-                Your security is of utmost importance.
-                <a href="#" className="text-blue-600 hover:text-blue-700 block">
-                  Know More...
-                </a>
-              </p>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-md p-6">
-              <h3 className="text-lg font-medium text-gray-900 mb-4">
-                First Time User?
-              </h3>
-              <a href="#" className="text-blue-600 hover:text-blue-700">
-                Register Now
-              </a>
-              <p className="text-sm text-gray-600 mt-2">
-                for a host of convenient features
-              </p>
-
-              <h4 className="text-lg font-medium text-gray-900 mt-6 mb-3">
-                We have added a host of new features!
-              </h4>
-              <ul className="text-sm text-gray-600 space-y-2">
-                <li className="flex items-start">
-                  <Info className="w-4 h-4 mr-2 mt-0.5 text-blue-600" />
-                  Anywhere access through Desktop or mobile
-                </li>
-                <li className="flex items-start">
-                  <Lock className="w-4 h-4 mr-2 mt-0.5 text-blue-600" />
-                  Enhanced security measures
-                </li>
-              </ul>
-            </div>
+          <div className="text-right text-xs text-blue-100">
+            <p>256-bit SSL Secured Session</p>
+            <p>System Time: {systemTime}</p>
           </div>
         </div>
+      </div>
+
+      <div className="border-b border-slate-300 bg-white">
+        <div className="mx-auto flex max-w-6xl gap-6 px-4 py-2 text-sm font-medium text-slate-700">
+          <span className="text-[#003b8e]">Personal Banking</span>
+          <span>Corporate Banking</span>
+          <span>Loans</span>
+          <span>Cards</span>
+          <span>Support</span>
+        </div>
+      </div>
+
+      <div className="mx-auto mt-4 max-w-6xl px-4">
+        <div className="flex items-center gap-2 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          <AlertTriangle className="h-4 w-4" />
+          Demo credentials: Customer ID{" "}
+          <strong className="mx-1">Dummy_user</strong> | Password{" "}
+          <strong className="ml-1">Dummy@1234</strong>
+        </div>
+      </div>
+
+      <main className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 py-6 lg:grid-cols-[2fr_1fr]">
+        <Card className="border border-slate-300 bg-white shadow-sm">
+          <div className="border-b border-slate-200 px-6 py-4">
+            <h2 className="text-lg font-semibold text-slate-900">
+              Login to NetBanking
+            </h2>
+            <p className="mt-1 text-sm text-slate-600">
+              Please authorize this payment request to continue.
+            </p>
+          </div>
+
+          <div className="space-y-4 px-6 py-6">
+            <FormField
+              label="Customer ID / User ID"
+              htmlFor="customerId"
+              labelClassName="mb-1 block text-sm font-medium text-slate-700"
+            >
+              <TextInput
+                type="text"
+                id="customerId"
+                value={data.customerId}
+                onChange={(e) =>
+                  setData((prev) => ({ ...prev, customerId: e.target.value }))
+                }
+                className="w-full rounded-md border border-slate-300 px-3 py-2 focus:border-[#003b8e] focus:outline-none focus:ring-2 focus:ring-blue-200"
+                placeholder="Enter Customer ID"
+                autoComplete="username"
+              />
+            </FormField>
+
+            <FormField
+              label="Login Password"
+              htmlFor="password"
+              labelClassName="mb-1 block text-sm font-medium text-slate-700"
+            >
+              <TextInput
+                type="password"
+                id="password"
+                value={data.password}
+                onChange={(e) =>
+                  setData((prev) => ({ ...prev, password: e.target.value }))
+                }
+                className="w-full rounded-md border border-slate-300 px-3 py-2 focus:border-[#003b8e] focus:outline-none focus:ring-2 focus:ring-blue-200"
+                placeholder="Enter Password"
+                autoComplete="current-password"
+              />
+            </FormField>
+
+            <Button
+              onClick={handleAddMoney}
+              disabled={!isFormValid || isSubmitting}
+              className="w-full rounded-md bg-[#003b8e] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#002f72] disabled:cursor-not-allowed disabled:bg-slate-400"
+            >
+              {isSubmitting ? "Processing..." : "Authorize Payment"}
+            </Button>
+
+            <p className="text-xs text-slate-500">
+              By continuing, you authorize SecureBank to process this wallet
+              funding request.
+            </p>
+          </div>
+        </Card>
+
+        <aside className="space-y-4">
+          <Card className="border border-slate-300 bg-white p-5 shadow-sm">
+            <div className="mb-3 flex items-center gap-2 text-slate-900">
+              <ShieldCheck className="h-5 w-5 text-emerald-600" />
+              <h3 className="font-semibold">Security Tips</h3>
+            </div>
+            <ul className="space-y-2 text-sm text-slate-600">
+              <li>Never share OTP or password with anyone.</li>
+              <li>Always verify URL before login.</li>
+              <li>Use virtual keyboard for high-risk networks.</li>
+            </ul>
+          </Card>
+
+          <Card className="border border-slate-300 bg-white p-5 shadow-sm">
+            <div className="mb-3 flex items-center gap-2 text-slate-900">
+              <Lock className="h-5 w-5 text-[#003b8e]" />
+              <h3 className="font-semibold">Need Help?</h3>
+            </div>
+            <p className="text-sm text-slate-600">
+              Call 1800-000-000 or email support@securebank.demo
+            </p>
+          </Card>
+        </aside>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white mt-8 pb-5">
-        <div className="max-w-5xl mx-auto px-4 py-4">
-          <div className="flex justify-between text-sm">
-            <p>© Copyright SecureBank Ltd.</p>
-            <div className="space-x-4">
-              <a href="#" className="hover:text-gray-300">
-                Terms and Conditions
-              </a>
-              <a href="#" className="hover:text-gray-300">
-                Privacy Policy
-              </a>
-            </div>
+      <footer className="border-t border-slate-200 bg-white">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 text-xs text-slate-500">
+          <p>© SecureBank Ltd. All rights reserved.</p>
+          <div className="space-x-4">
+            <a href="#" className="hover:text-slate-700">
+              Terms
+            </a>
+            <a href="#" className="hover:text-slate-700">
+              Privacy
+            </a>
           </div>
         </div>
       </footer>

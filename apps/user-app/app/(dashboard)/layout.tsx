@@ -1,18 +1,14 @@
-import { SideBarClient } from "../../components/sideBarClient"
+import { SideBarClient } from "../../components/sideBarClient";
 
 export default function Layout({
-    children
+  children,
 }: Readonly<{
-    children: React.ReactNode
+  children: React.ReactNode;
 }>) {
-
-    return (
-        <div className="flex min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50">
-            <SideBarClient />
-            <div className="flex-1 overflow-auto">
-                {children}
-            </div>
-        </div>
-    )
+  return (
+    <div className="app-bg flex min-h-screen">
+      <SideBarClient />
+      <main className="min-w-0 flex-1">{children}</main>
+    </div>
+  );
 }
-

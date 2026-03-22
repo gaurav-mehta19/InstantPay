@@ -19,10 +19,10 @@ model User {
   phone String @unique
   password String?
   name String
-  balance Balance[]
+  balance Balance?
   onRampTransaction OnRampTransaction[]
-  p2pTransactionFromUser P2PTransaction[] @relation(name: "FromUserRealtion")
-  p2pTransactionToUser P2PTransaction[] @relation(name: "ToUserRealtion")
+  p2pTransactionFromUser P2PTransaction[] @relation(name: "FromUserRelation")
+  p2pTransactionToUser P2PTransaction[] @relation(name: "ToUserRelation")
 }
 
 model Balance{
@@ -36,12 +36,15 @@ model Balance{
 model OnRampTransaction {
   id String @id @default(cuid())
   status Status
-  token String @unique 
+  token String @unique
   provider String
   amount Int
   userId String
   user User @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+  @@index([userId, status, createdAt])
 }
 
 model P2PTransaction {
@@ -50,10 +53,14 @@ model P2PTransaction {
   toUserId String
   status Status
   amount Int
-  fromUser User @relation(name: "FromUserRealtion", fields: [fromUserId], references: [id])
-  toUser User @relation(name: "ToUserRealtion", fields: [toUserId], references: [id])
-  direction String
+  fromUser User @relation(name: "FromUserRelation", fields: [fromUserId], references: [id])
+  toUser User @relation(name: "ToUserRelation", fields: [toUserId], references: [id])
+  transferKey String @unique
   createdAt DateTime @default(now())
+
+  @@index([fromUserId, createdAt])
+  @@index([toUserId, createdAt])
+  @@index([status, createdAt])
 }
 
 model Bank {
@@ -61,8 +68,10 @@ model Bank {
   accountNumber String @unique
   balance Int
   name String
-  userID String 
+  userId String
   password String
+
+  @@index([userId])
 }
 
 enum Status {

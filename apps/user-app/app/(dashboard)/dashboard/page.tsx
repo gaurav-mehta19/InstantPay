@@ -1,95 +1,70 @@
+import dynamicImport from "next/dynamic";
+import { getBalance, getBalanceHistory } from "../../../lib/utils/balance-core";
+import { BreadcrumbNav } from "../../../components/shared/BreadcrumbNav";
 
-import dynamicImport from "next/dynamic"
-import { getBalance , getBalanceHistory } from "../../../lib/utils/blance"
+const AddMoney = dynamicImport(
+  () =>
+    import("../../../components/addMoneyCard").then((module) => ({
+      default: module.AddMoney,
+    })),
+  { ssr: false },
+);
 
-// Dynamic imports with loading states
-const AddMoney = dynamicImport(() => import("../../../components/addMoneyCard").then(module => ({ default: module.AddMoney })), {
-  loading: () => (
-    <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-elegant border border-neutral-200 p-8 animate-pulse">
-      <div className="h-6 bg-gray-200 rounded w-1/3 mb-4"></div>
-      <div className="h-4 bg-gray-200 rounded w-1/2 mb-6"></div>
-      <div className="space-y-3">
-        <div className="h-12 bg-gray-200 rounded"></div>
-        <div className="h-12 bg-gray-200 rounded"></div>
-        <div className="h-10 bg-gray-200 rounded"></div>
+const BalanceCard = dynamicImport(
+  () =>
+    import("../../../components/balanceCard").then((module) => ({
+      default: module.BalanceCard,
+    })),
+  { ssr: false },
+);
+
+const BalanceChart = dynamicImport(
+  () =>
+    import("../../../components/graph").then((module) => ({
+      default: module.BalanceChart,
+    })),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="animate-pulse space-y-3">
+        <div className="h-4 w-44 rounded bg-neutral-200" />
+        <div className="h-[300px] w-full rounded bg-neutral-100" />
       </div>
-    </div>
-  ),
-  ssr: false
-})
-
-const BalanceCard = dynamicImport(() => import("../../../components/balanceCard").then(module => ({ default: module.BalanceCard })), {
-  loading: () => (
-    <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-elegant border border-neutral-200 p-8 animate-pulse">
-      <div className="h-6 bg-gray-200 rounded w-1/4 mb-4"></div>
-      <div className="h-8 bg-gray-200 rounded w-1/2 mb-2"></div>
-      <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-    </div>
-  ),
-  ssr: false
-})
-
-const BalanceChart = dynamicImport(() => import("../../../components/garph").then(module => ({ default: module.BalanceChart })), {
-  loading: () => (
-    <div className="animate-pulse">
-      <div className="h-64 bg-gray-200 rounded"></div>
-    </div>
-  ),
-  ssr: false
-})
-
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+    ),
+  },
+);
 
 export default async function Dashboard() {
-    const balance = await getBalance()
-    const balanceHistory = await getBalanceHistory()
+  const bypassCache = true;
 
+  const balance = await getBalance({ bypassCache });
+  const balanceHistory = await getBalanceHistory({ bypassCache });
 
-    return (
-        <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50">
-            <div className="w-full">
-                {/* Header Section */}
-                <div className="bg-white/80 backdrop-blur-md border-b border-primary-100 px-6 py-6 mb-8">
-                    <div className="max-w-7xl mx-auto">
-                        <h1 className="text-3xl md:text-4xl font-bold text-neutral-800 mb-2 animate-fade-in">
-                            Welcome back! 
-                            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Dashboard</span>
-                        </h1>
-                        <p className="text-neutral-600 text-lg animate-slide-in-left">Manage your finances with ease and security</p>
-                    </div>
-                </div>
+  return (
+    <div className="mx-auto w-full max-w-[1200px] px-4 pb-4 pt-2 md:px-6">
+      <div className="flex min-h-[calc(100vh-4rem)] flex-col gap-3">
+        <BreadcrumbNav current="Dashboard" />
 
-                {/* Main Content */}
-                <div className="max-w-7xl mx-auto px-6">
-                    {/* Cards Section */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-                        <div className="animate-slide-in-left h-full">
-                            <AddMoney />
-                        </div>
-                        <div className="animate-slide-in-right h-full">
-                            <BalanceCard amount={balance} locked={0} />
-                        </div>
-                    </div>
-                    
-                    {/* Chart Section */}
-                    <div className="animate-fade-in" style={{animationDelay: '0.4s'}}>
-                        <div className="bg-white/80 backdrop-blur-md rounded-3xl shadow-elegant border border-neutral-200 p-8">
-                            <h2 className="text-2xl font-bold text-neutral-800 mb-6 flex items-center">
-                                <div className="p-2 bg-gradient-to-br from-primary to-secondary rounded-xl mr-3">
-                                    <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                                    </svg>
-                                </div>
-                                Balance History
-                            </h2>
-                            <BalanceChart data={balanceHistory} />
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div className="grid grid-cols-1 gap-4 lg:auto-rows-fr lg:grid-cols-12 lg:items-stretch">
+          <div className="h-full lg:col-span-7">
+            <AddMoney />
+          </div>
+
+          <div className="h-full lg:col-span-5">
+            <BalanceCard amount={balance} locked={0} />
+          </div>
         </div>
-    )
+
+        <div className="min-h-0 flex-1">
+          <div className="panel card-interactive surface-neutral flex h-full min-h-[300px] flex-col">
+            <h2 className="panel-title">Balance Trend</h2>
+            <p className="panel-subtitle">Recent balance changes over time.</p>
+            <div className="mt-2 min-h-0 flex-1">
+              <BalanceChart data={balanceHistory} height={268} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
-
-

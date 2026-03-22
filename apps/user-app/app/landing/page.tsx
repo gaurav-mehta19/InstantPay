@@ -1,10 +1,5 @@
-import LandingClientWrapper from "./LandingClientWrapper";
-
+import { redirect } from "next/navigation";
 
 export default function Landing() {
-    return (
-        <div>
-            <LandingClientWrapper />
-        </div>
-    )
+  redirect("/home");
 }

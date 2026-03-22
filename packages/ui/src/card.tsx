@@ -1,28 +1,20 @@
-import { type ClassValue, clsx } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import React from "react";
+import { cn } from "./cn";
 
-export interface CardProps {
-  title: string;
-  children?: React.ReactNode;
+type CardProps = {
+  children: React.ReactNode;
   className?: string;
-}
+};
 
-
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
-export const Card = ({ title, children, className }: CardProps) => {
+export function Card({ children, className }: CardProps) {
   return (
-    <div className="bg-white rounded-xl border border-neutral-200 shadow-sm overflow-hidden">
-      <div className="px-6 py-3 border-b border-neutral-200">
-        <h3 className="text-xl font-semibold text-[#1a56db]">{title}</h3>
-      </div>
-      <div className={cn('p-6', className)}>
-        {children}
-      </div>
+    <div
+      className={cn(
+        "rounded-lg border border-slate-200 bg-white shadow-sm",
+        className,
+      )}
+    >
+      {children}
     </div>
   );
 }
-

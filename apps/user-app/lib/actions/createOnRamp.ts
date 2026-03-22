@@ -1,32 +1,48 @@
-"use server"
-import { randomBytes } from 'crypto';
-import { getServerSession } from "next-auth";
+"use server";
+
+import { getServerSession } from "next-auth/next";
+import { revalidateTag } from "next/cache";
 import { NEXT_AUTH } from "../auth";
-import prisma from "@repo/db/client";
+import { OnRampService } from "../server/services/onramp-service";
+import { transactionsTag } from "../server/core/cache-tags";
 
-export async function createOnRampTransaction(amount:number , provider:string){
-    const session = await getServerSession(NEXT_AUTH)
-    const token = randomBytes(32).toString('hex'); // axios.get('/hdfc/getToken',{amount:amount,userID:userid})
-    const userId = session?.user?.id
+const onRampService = new OnRampService();
 
-    if(!userId){
-        return {
-            message:"you are not logged in"
-        }
+export async function createOnRampTransaction(
+  amount: number,
+  provider: string,
+  idempotencyKey?: string,
+) {
+  const session = (await getServerSession(NEXT_AUTH)) as {
+    user?: { id?: string };
+  } | null;
+  const userId = session?.user?.id;
+
+  const result = await onRampService.createTransaction(userId, {
+    amountInPaise: amount,
+    provider,
+    idempotencyKey,
+  });
+
+  if (!result.ok) {
+    switch (result.error) {
+      case "UNAUTHENTICATED":
+        return { message: "you are not logged in" };
+      case "INVALID_INPUT":
+        return { message: "Invalid on-ramp input" };
+      case "UNSUPPORTED_PROVIDER":
+        return { message: "Unsupported bank provider" };
+      default:
+        return { message: "Unable to create on-ramp transaction" };
     }
+  }
 
-    await prisma.onRampTransaction.create({
-        data:{
-            amount,
-            provider,
-            userId,
-            status:"Processing",
-            token:token,
-        }
-    })
-    
-    return {
-        token,
-        message:"On Ramp Transaction created"
-    }
+  if (userId) {
+    revalidateTag(transactionsTag(userId));
+  }
+
+  return {
+    token: result.value.token,
+    message: result.value.message,
+  };
 }

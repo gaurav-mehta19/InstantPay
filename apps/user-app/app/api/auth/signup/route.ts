@@ -1,52 +1,56 @@
 import prisma from "@repo/db/client";
 import { NextRequest, NextResponse } from "next/server";
-import { signupInput } from "@repo/validation/input"
+import { signupInput } from "../../../../lib/validation/input";
 import bcrypt from "bcrypt";
 
 export async function POST(req: NextRequest) {
-    const body = await req.json();
+  const body = await req.json();
 
-    const { success } = signupInput.safeParse(body);
+  const parsed = signupInput.safeParse(body);
 
-    if (!success) {
-        return NextResponse.json({
-          error : 'Invalid Input' 
-     })
-    }
+  if (!parsed.success) {
+    const message =
+      parsed.error.issues[0]?.message ?? "Invalid signup input provided";
+    return NextResponse.json(
+      {
+        error: message,
+      },
+      { status: 400 },
+    );
+  }
 
-    const existingUser = await prisma.user.findFirst({
-        where: {
-            phone: body.phone
-        }
+  const existingUser = await prisma.user.findFirst({
+    where: {
+      phone: body.phone,
+    },
+  });
+
+  if (existingUser) {
+    return NextResponse.json(
+      {
+        error: "Error creating user",
+      },
+      { status: 400 },
+    );
+  }
+
+  try {
+    const hashedPassword = await bcrypt.hash(body.password, 12);
+    const newUser = await prisma.user.create({
+      data: {
+        phone: body.phone,
+        password: hashedPassword,
+        name: body.name,
+      },
     });
-    
-    if (existingUser) {
-        return NextResponse.json({
-            error: 'Error creating user'
-        }, { status: 400 })
-    }
-
-    try {
-        const hashedPassword = await bcrypt.hash(body.password, 12);
-        const newUser = await prisma.user.create({
-            data: {
-                phone: body.phone,
-                password: hashedPassword,
-                name: body.name
-            }
-        });
-        return NextResponse.json({
-            id: newUser.id,
-            name: newUser.name,
-        })
-    }
-    catch (err) {
-        console.log(err);
-        return NextResponse.json(
-            { error: 'Error creating user' },
-            { status: 500 }
-        )
-    }
+    return NextResponse.json({
+      id: newUser.id,
+      name: newUser.name,
+    });
+  } catch (err) {
+    console.log(err);
+    return NextResponse.json({ error: "Error creating user" }, { status: 500 });
+  }
 }
 
 // export async function PUT(req:NextRequest){

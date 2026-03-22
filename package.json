@@ -2,17 +2,27 @@
   "name": "payment",
   "private": true,
   "scripts": {
+    "dev:all": "turbo dev",
+    "dev:user": "yarn workspace user_app dev",
+    "dev:dummy": "yarn workspace dummy_bank dev",
+    "dev:webhook": "yarn workspace bank-webhook dev",
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "start-user-app": "cd apps/user-app && yarn start"
+    "start:user": "yarn workspace user_app start",
+    "start:dummy": "yarn workspace dummy_bank start",
+    "db:generate": "yarn workspace @repo/db db:generate",
+    "db:migrate": "yarn workspace @repo/db db:migrate:dev",
+    "db:migrate:deploy": "yarn workspace @repo/db db:migrate:deploy",
+    "db:push": "yarn workspace @repo/db db:push",
+    "db:studio": "yarn workspace @repo/db db:studio",
+    "db:reset": "yarn workspace @repo/db db:reset"
   },
   "devDependencies": {
-    "@types/minimatch": "^5.1.2",
     "prettier": "^3.2.5",
-    "turbo": "^2.0.11",
-    "typescript": "^5.4.5"
+    "turbo": "^2.4.4",
+    "typescript": "^5.8.2"
   },
   "engines": {
     "node": ">=18"

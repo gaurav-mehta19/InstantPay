@@ -1,30 +1,30 @@
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next";
+import { unstable_cache } from "next/cache";
 import { NEXT_AUTH } from "../auth";
-import prisma from "@repo/db/client";
+import { ProfileService } from "../server/services/profile-service";
+import { profileTag } from "../server/core/cache-tags";
+
+const profileService = new ProfileService();
 
 export async function getProfile() {
-    const session = await getServerSession(NEXT_AUTH);
+  const session = (await getServerSession(NEXT_AUTH)) as {
+    user?: { id?: string };
+  } | null;
+  const userId = session?.user?.id;
 
-    if (!session?.user?.id) {
-        throw new Error("User not authenticated.");
-    }
+  if (!userId) {
+    throw new Error("User not authenticated.");
+  }
 
-    const profile = await prisma.user.findFirst({
-        where: {
-            id: session.user.id
-        },
-        select: {
-            phone: true,
-            name: true,
-        }
-    });
+  const result = await unstable_cache(
+    async () => profileService.getProfile(userId),
+    ["profile", userId],
+    { revalidate: 60, tags: [profileTag(userId)] },
+  )();
 
-    if (!profile) {
-        throw new Error("Profile not found");
-    }
+  if (!result.ok) {
+    throw new Error("Profile not found");
+  }
 
-    return {
-        phone: profile.phone,
-        name: profile.name,
-    };
+  return result.value;
 }
