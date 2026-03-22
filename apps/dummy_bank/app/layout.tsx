@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "InstantPay Sandbox Authorization",
   description:
     "Sandbox authorization portal for InstantPay webhook and wallet top-up testing.",
+  verification: {
+    google: "N4W6NRQ0UlAyRp9qUzIIACzm4eijyuD32DfXlLVHXpM",
+  },
   robots: {
     index: false,
     follow: false,
